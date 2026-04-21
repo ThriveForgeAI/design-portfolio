@@ -1,3 +1,16 @@
+# Wrangler (Cloudflare Pages local deploy cache)
 .wrangler/
+
+# macOS
 .DS_Store
+
+# Node
 node_modules/
+
+# Logs
+*.log
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
