@@ -244,6 +244,91 @@
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
 
+  /* Tightened CTA section (was default 128px, now roughly half) */
+  #cta { padding: 64px 0; }
+
+  /* Pricing */
+  #pricing { padding: 112px 0 96px; }
+  #pricing .section-head {
+    text-align: center; margin: 0 auto 56px; max-width: 640px;
+  }
+  #pricing .section-head h2 { margin: 0 0 12px; }
+  #pricing .section-head p { margin: 0 auto; }
+  .plans {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1100px; margin: 0 auto;
+    align-items: stretch;
+  }
+  .plan {
+    background: var(--cream-surface);
+    border: 1px solid var(--cream-light);
+    border-radius: 12px;
+    padding: 32px 28px 30px;
+    display: flex; flex-direction: column; gap: 22px;
+    position: relative;
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .plan:hover { border-color: var(--charcoal-40); }
+  .plan--featured {
+    background: var(--charcoal);
+    color: var(--offwhite);
+    border-color: var(--charcoal);
+    transform: translateY(-8px);
+    box-shadow: var(--inset-dark), 0 14px 36px rgba(0,0,0,0.10);
+  }
+  .plan--featured:hover { border-color: var(--charcoal); }
+  .plan-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--cream-surface); color: var(--charcoal);
+    font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 9999px;
+    border: 1px solid var(--cream-light);
+    white-space: nowrap;
+  }
+  .plan-head h3 {
+    font-size: 22px; font-weight: 600; letter-spacing: -0.3px;
+    margin: 0 0 6px;
+  }
+  .plan-desc {
+    margin: 0; font-size: 14px; line-height: 1.5;
+    color: var(--muted);
+  }
+  .plan--featured .plan-desc { color: rgba(252,251,248,0.68); }
+  .plan-price { display: flex; align-items: baseline; gap: 6px; }
+  .plan-price .amt {
+    font-size: 44px; font-weight: 600; letter-spacing: -1.5px; line-height: 1;
+  }
+  .plan-price .per { font-size: 14px; color: var(--muted); }
+  .plan--featured .plan-price .per { color: rgba(252,251,248,0.68); }
+  .plan-trial {
+    font-size: 12px; color: var(--muted); margin-top: -14px;
+  }
+  .plan--featured .plan-trial { color: rgba(252,251,248,0.55); }
+  .plan-features {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 10px;
+    flex: 1;
+  }
+  .plan-features li {
+    position: relative; padding-left: 24px;
+    font-size: 14px; line-height: 1.5;
+  }
+  .plan-features li::before {
+    content: ""; position: absolute; left: 0; top: 4px;
+    width: 14px; height: 8px;
+    border-left: 1.5px solid var(--charcoal);
+    border-bottom: 1.5px solid var(--charcoal);
+    transform: rotate(-45deg);
+  }
+  .plan--featured .plan-features li::before { border-color: var(--offwhite); }
+  .plan .btn { justify-content: center; width: 100%; }
+  .plan--featured .btn-dark {
+    background: var(--offwhite); color: var(--charcoal);
+    box-shadow: var(--inset-dark);
+  }
+  .plan--featured .btn-dark:hover { background: #ffffff; }
+
   @media (max-width: 900px) {
     .nav-links { display: none; }
     .features, .templates { grid-template-columns: 1fr; }
@@ -252,6 +337,10 @@
     .hero { padding: 72px 0 56px; }
     .footer-grid { grid-template-columns: 1fr 1fr; }
     footer { padding: 48px 24px 24px; }
+    #cta { padding: 48px 0; }
+    #pricing { padding: 64px 0 56px; }
+    .plans { grid-template-columns: 1fr; }
+    .plan--featured { transform: none; }
   }
 </style>
 </head>
@@ -317,10 +406,10 @@
   <section id="stats" style="padding: 40px 0 0;">
     <div class="container">
       <div class="stats">
-        <div><div class="stat-n">2.1M+</div><div class="stat-l">Apps shipped</div></div>
-        <div><div class="stat-n">84k</div><div class="stat-l">Teams building</div></div>
-        <div><div class="stat-n">99.98%</div><div class="stat-l">Uptime over 90 days</div></div>
-        <div><div class="stat-n">12s</div><div class="stat-l">Avg. first build</div></div>
+        <div><div class="stat-n" data-count-to="2.1" data-decimals="1" data-suffix="M+">2.1M+</div><div class="stat-l">Apps shipped</div></div>
+        <div><div class="stat-n" data-count-to="84" data-decimals="0" data-suffix="k">84k</div><div class="stat-l">Teams building</div></div>
+        <div><div class="stat-n" data-count-to="99.98" data-decimals="2" data-suffix="%">99.98%</div><div class="stat-l">Uptime over 90 days</div></div>
+        <div><div class="stat-n" data-count-to="12" data-decimals="0" data-suffix="s">12s</div><div class="stat-l">Avg. first build</div></div>
       </div>
     </div>
   </section>
@@ -405,6 +494,65 @@
     </div>
   </section>
 
+  <section id="pricing" style="background: var(--charcoal-03); border-top: 1px solid var(--cream-light); border-bottom: 1px solid var(--cream-light);">
+    <div class="container">
+      <div class="section-head">
+        <h2>Priced for the long run.</h2>
+        <p>Start free. Upgrade when your app starts paying for itself.</p>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <div class="plan-head">
+            <h3>Free</h3>
+            <p class="plan-desc">For hobby projects and weekend tinkering.</p>
+          </div>
+          <div class="plan-price"><span class="amt">$0</span><span class="per">/month</span></div>
+          <ul class="plan-features">
+            <li>1 app</li>
+            <li>Heartwood subdomain</li>
+            <li>Community support</li>
+            <li>Export full source any time</li>
+          </ul>
+          <a href="#signup" class="btn btn-ghost">Start free</a>
+        </article>
+
+        <article class="plan plan--featured">
+          <div class="plan-badge">Most popular</div>
+          <div class="plan-head">
+            <h3>Pro</h3>
+            <p class="plan-desc">For builders shipping real products.</p>
+          </div>
+          <div class="plan-price"><span class="amt">$29</span><span class="per">/month</span></div>
+          <div class="plan-trial">7-day free trial · no credit card</div>
+          <ul class="plan-features">
+            <li>Unlimited apps</li>
+            <li>Custom domains</li>
+            <li>Priority support</li>
+            <li>Advanced integrations</li>
+            <li>Team collaboration</li>
+          </ul>
+          <a href="#start-trial" class="btn btn-dark">Start 7-day free trial</a>
+        </article>
+
+        <article class="plan">
+          <div class="plan-head">
+            <h3>Enterprise</h3>
+            <p class="plan-desc">For teams that need SLA, SSO, and a direct line.</p>
+          </div>
+          <div class="plan-price"><span class="amt">$299</span><span class="per">/month</span></div>
+          <ul class="plan-features">
+            <li>Everything in Pro</li>
+            <li>Dedicated support engineer</li>
+            <li>99.99% uptime SLA</li>
+            <li>SSO / SAML</li>
+            <li>Custom integrations</li>
+          </ul>
+          <a href="#contact" class="btn btn-ghost">Contact us</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <section id="cta">
     <div class="container" style="text-align:center;max-width:760px;margin:0 auto;">
       <h2 style="font-size: clamp(36px, 5vw, 54px);">The most lovable way to ship software.</h2>
@@ -442,6 +590,53 @@
     <div><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Cookies</a></div>
   </div>
 </footer>
+
+<script>
+  // Count-up animation on scroll for stats
+  (function () {
+    const nums = document.querySelectorAll('.stat-n[data-count-to]');
+    if (!nums.length) return;
+
+    function format(el, value) {
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const suffix = el.dataset.suffix || '';
+      return value.toFixed(decimals) + suffix;
+    }
+
+    // Seed each number at 0 so count-up is visible even on first paint
+    nums.forEach(n => { n.textContent = format(n, 0); });
+
+    function animate(el) {
+      const target = parseFloat(el.dataset.countTo);
+      const duration = 1400; // ms — ~5-7x the human read-speed of the number
+      const start = performance.now();
+      function tick(now) {
+        const p = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+        el.textContent = format(el, target * eased);
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      // Fallback: no IO — just snap to final values
+      nums.forEach(n => { n.textContent = format(n, parseFloat(n.dataset.countTo)); });
+      return;
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animate(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    nums.forEach(n => io.observe(n));
+  })();
+</script>
 
 </body>
 </html>
