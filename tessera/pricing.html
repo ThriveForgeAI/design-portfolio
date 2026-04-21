@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Pricing — Tessera</title>
+<meta name="description" content="Tessera pricing — Community, Pro, and Enterprise. Start free, upgrade when you need more." />
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="common.css" />
+<style>
+  .pricing-wrap {
+    max-width: 1200px; margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  .pricing-intro {
+    text-align: center; max-width: 620px;
+    margin: 0 auto 56px;
+  }
+  .pricing-intro h1 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4.5vw, 44px);
+    font-weight: 500; line-height: 1.05;
+    letter-spacing: -0.4px; margin: 0 0 12px;
+  }
+  .pricing-intro p {
+    color: var(--text-muted); font-size: 17px; margin: 0;
+  }
+
+  .plans {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    align-items: stretch;
+  }
+  .plan {
+    position: relative;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 28px;
+    display: flex; flex-direction: column; gap: 22px;
+    transition: border-color .15s ease;
+  }
+  .plan:hover { border-color: var(--border-strong); }
+  .plan--featured {
+    border: 1px solid var(--text);
+    transform: translateY(-8px);
+  }
+  .plan--featured:hover { border-color: var(--text); }
+  .plan-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--text); color: var(--bg);
+    font-family: var(--font-display);
+    font-size: 11px; letter-spacing: 0.5px;
+    padding: 5px 12px; border-radius: 9999px;
+    white-space: nowrap; font-weight: 500;
+    text-transform: uppercase;
+  }
+  .plan-head h2 {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 500; letter-spacing: -0.2px;
+    margin: 0 0 6px;
+  }
+  .plan-desc {
+    margin: 0; font-size: 14px; line-height: 1.55;
+    color: var(--text-muted);
+  }
+  .plan-price {
+    display: flex; align-items: baseline; gap: 6px;
+  }
+  .plan-price .amt {
+    font-family: var(--font-display);
+    font-size: 44px; font-weight: 500; letter-spacing: -1.5px;
+    line-height: 1;
+    color: var(--text);
+  }
+  .plan-price .per { font-size: 14px; color: var(--text-muted); }
+  .plan-trial {
+    font-size: 12px; color: var(--text-muted); margin-top: -14px;
+  }
+  .plan-features {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 10px;
+    flex: 1;
+  }
+  .plan-features li {
+    position: relative; padding-left: 26px;
+    font-size: 14px; line-height: 1.5;
+    color: var(--text-2);
+  }
+  .plan-features li::before {
+    content: ""; position: absolute; left: 0; top: 4px;
+    width: 16px; height: 16px;
+    border: 1px solid var(--border-strong);
+    border-radius: 9999px;
+    background: var(--bg-elev);
+  }
+  .plan-features li::after {
+    content: ""; position: absolute; left: 4px; top: 8px;
+    width: 8px; height: 4px;
+    border-left: 1.5px solid var(--text);
+    border-bottom: 1.5px solid var(--text);
+    transform: rotate(-45deg);
+  }
+  .plan .btn { justify-content: center; width: 100%; }
+
+  /* Feature comparison matrix */
+  .compare {
+    margin-top: 96px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .compare table {
+    width: 100%; border-collapse: collapse;
+    font-size: 14px;
+  }
+  .compare thead th {
+    background: var(--bg-elev);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-display);
+    font-size: 14px; font-weight: 500;
+    color: var(--text);
+    padding: 18px 20px;
+    text-align: left;
+  }
+  .compare thead th:first-child {
+    color: var(--text-muted); font-weight: 400;
+    text-transform: uppercase; letter-spacing: 1px; font-size: 11px;
+  }
+  .compare tbody td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-2);
+  }
+  .compare tbody tr:last-child td { border-bottom: 0; }
+  .compare .section-row td {
+    background: var(--bg-elev);
+    font-family: var(--font-display);
+    font-size: 12px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--text-muted);
+    padding: 12px 20px;
+  }
+  .compare td.feat { font-weight: 400; color: var(--text); width: 40%; }
+  .compare td.val { text-align: center; color: var(--text-muted); }
+  .compare .tick {
+    display: inline-block; width: 14px; height: 14px; position: relative;
+  }
+  .compare .tick::after {
+    content: ""; position: absolute; left: 1px; top: 3px;
+    width: 10px; height: 5px;
+    border-left: 1.5px solid var(--text);
+    border-bottom: 1.5px solid var(--text);
+    transform: rotate(-45deg);
+  }
+  .compare .dash {
+    display: inline-block; width: 10px; height: 1.5px;
+    background: var(--text-faint);
+  }
+
+  .faq {
+    margin-top: 80px;
+    max-width: 780px; margin-left: auto; margin-right: auto;
+  }
+  .faq h2 {
+    font-family: var(--font-display);
+    font-size: 28px; font-weight: 500; letter-spacing: -0.2px;
+    text-align: center; margin: 0 0 28px;
+  }
+  .faq-item {
+    border-top: 1px solid var(--border);
+    padding: 20px 0;
+  }
+  .faq-item:last-child { border-bottom: 1px solid var(--border); }
+  .faq-item h3 {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 500; margin: 0 0 8px;
+  }
+  .faq-item p { font-size: 15px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+
+  @media (max-width: 900px) {
+    .plans { grid-template-columns: 1fr; gap: 16px; }
+    .plan--featured { transform: none; }
+    .compare { overflow-x: auto; }
+    .compare table { min-width: 560px; }
+  }
+</style>
+</head>
+<body>
+<script>try { if (localStorage.getItem('tessera-theme') === 'dark') document.body.classList.add('dark'); } catch (e) {}</script>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="12"/><path d="M11 10h10M16 10v12" stroke-linecap="round"/></svg>
+      Tessera
+    </a>
+    <nav class="nav-center" aria-label="Primary">
+      <a href="index.html#models">Models</a>
+      <a href="docs.html">Docs</a>
+      <a href="pricing.html" class="active">Pricing</a>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <a href="signin.html" class="signin-link">Sign in</a>
+      <a href="index.html#download" class="btn btn-black">Download</a>
+    </div>
+  </div>
+</header>
+
+<div class="page-head">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a><span class="sep">/</span><span class="current">Pricing</span>
+    </nav>
+  </div>
+</div>
+
+<main class="pricing-wrap">
+  <div class="pricing-intro">
+    <h1>Simple pricing. Start free.</h1>
+    <p>Tessera is free forever for local use. Paid plans add cloud sync, team features, and enterprise-grade security.</p>
+  </div>
+
+  <div class="plans">
+    <article class="plan">
+      <div class="plan-head">
+        <h2>Community</h2>
+        <p class="plan-desc">For individuals running models locally.</p>
+      </div>
+      <div class="plan-price"><span class="amt">Free</span><span class="per">forever</span></div>
+      <ul class="plan-features">
+        <li>Unlimited local models</li>
+        <li>Full HTTP API on localhost</li>
+        <li>Open source under Apache 2.0</li>
+        <li>Community support on Discord</li>
+        <li>Export &amp; self-host anywhere</li>
+      </ul>
+      <a href="index.html#download" class="btn btn-outline">Download Tessera</a>
+    </article>
+
+    <article class="plan plan--featured">
+      <div class="plan-badge">Recommended</div>
+      <div class="plan-head">
+        <h2>Pro</h2>
+        <p class="plan-desc">For developers shipping with local models in production.</p>
+      </div>
+      <div class="plan-price"><span class="amt">$19</span><span class="per">/month</span></div>
+      <div class="plan-trial">7-day free trial · no credit card</div>
+      <ul class="plan-features">
+        <li>Everything in Community</li>
+        <li>Priority email support</li>
+        <li>Cloud sync across devices</li>
+        <li>Team sharing up to 5 seats</li>
+        <li>Private model library</li>
+        <li>Usage analytics</li>
+      </ul>
+      <a href="#start-trial" class="btn btn-black">Start 7-day free trial</a>
+    </article>
+
+    <article class="plan">
+      <div class="plan-head">
+        <h2>Enterprise</h2>
+        <p class="plan-desc">For teams that need SLA, SSO, and a direct line.</p>
+      </div>
+      <div class="plan-price"><span class="amt">$99</span><span class="per">/month</span></div>
+      <ul class="plan-features">
+        <li>Everything in Pro</li>
+        <li>SSO / SAML</li>
+        <li>Audit logs</li>
+        <li>99.9% uptime SLA</li>
+        <li>Dedicated support engineer</li>
+        <li>Custom integrations</li>
+        <li>Annual invoicing</li>
+      </ul>
+      <a href="#contact-sales" class="btn btn-gray">Contact sales</a>
+    </article>
+  </div>
+
+  <section class="compare" aria-label="Feature comparison">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Community</th>
+          <th>Pro</th>
+          <th>Enterprise</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="section-row"><td colspan="4">Runtime</td></tr>
+        <tr><td class="feat">Local models, unlimited</td><td class="val"><span class="tick"></span></td><td class="val"><span class="tick"></span></td><td class="val"><span class="tick"></span></td></tr>
+        <tr><td class="feat">HTTP API on <code style="font-family:var(--mono);">localhost</code></td><td class="val"><span class="tick"></span></td><td class="val"><span class="tick"></span></td><td class="val"><span class="tick"></span></td></tr>
+        <tr><td class="feat">GPU acceleration (CUDA / Metal)</td><td class="val"><span class="tick"></span></td><td class="val"><span class="tick"></span></td><td class="val"><span class="tick"></span></td></tr>
+
+        <tr class="section-row"><td colspan="4">Collaboration</td></tr>
+        <tr><td class="feat">Cloud sync</td><td class="val"><span class="dash"></span></td><td class="val"><span class="tick"></span></td><td class="val"><span class="tick"></span></td></tr>
+        <tr><td class="feat">Team seats</td><td class="val"><span class="dash"></span></td><td class="val">Up to 5</td><td class="val">Unlimited</td></tr>
+        <tr><td class="feat">Private model library</td><td class="val"><span class="dash"></span></td><td class="val"><span class="tick"></span></td><td class="val"><span class="tick"></span></td></tr>
+
+        <tr class="section-row"><td colspan="4">Security &amp; compliance</td></tr>
+        <tr><td class="feat">SSO / SAML</td><td class="val"><span class="dash"></span></td><td class="val"><span class="dash"></span></td><td class="val"><span class="tick"></span></td></tr>
+        <tr><td class="feat">Audit logs</td><td class="val"><span class="dash"></span></td><td class="val"><span class="dash"></span></td><td class="val"><span class="tick"></span></td></tr>
+        <tr><td class="feat">SOC 2 report</td><td class="val"><span class="dash"></span></td><td class="val"><span class="dash"></span></td><td class="val"><span class="tick"></span></td></tr>
+
+        <tr class="section-row"><td colspan="4">Support</td></tr>
+        <tr><td class="feat">Community Discord</td><td class="val"><span class="tick"></span></td><td class="val"><span class="tick"></span></td><td class="val"><span class="tick"></span></td></tr>
+        <tr><td class="feat">Priority email support</td><td class="val"><span class="dash"></span></td><td class="val"><span class="tick"></span></td><td class="val"><span class="tick"></span></td></tr>
+        <tr><td class="feat">Dedicated support engineer</td><td class="val"><span class="dash"></span></td><td class="val"><span class="dash"></span></td><td class="val"><span class="tick"></span></td></tr>
+        <tr><td class="feat">99.9% uptime SLA</td><td class="val"><span class="dash"></span></td><td class="val"><span class="dash"></span></td><td class="val"><span class="tick"></span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="faq">
+    <h2>Questions we hear often</h2>
+    <div class="faq-item">
+      <h3>Is Tessera really free?</h3>
+      <p>Yes. The runtime, the CLI, and the HTTP server are Apache 2.0 and free forever. Paid tiers add convenience layers on top — cloud sync, team sharing, SSO — they don't gate core functionality.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do you send my prompts anywhere?</h3>
+      <p>Never. Models run entirely on your hardware. Even on paid tiers, cloud sync is opt-in and end-to-end encrypted. Community tier has zero outbound calls.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I upgrade or downgrade at any time?</h3>
+      <p>Yes. Prorated in both directions. Cancel anytime; no retention calls, no sales gatekeeping.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does Enterprise include a custom deployment?</h3>
+      <p>Air-gapped deployments and VPC setups are available on Enterprise. Talk to sales about requirements.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What payment methods do you accept?</h3>
+      <p>Cards (Stripe) for Pro. Cards or annual invoicing (wire / ACH) for Enterprise.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:10px;">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="12"/><path d="M11 10h10M16 10v12" stroke-linecap="round"/></svg>
+          Tessera
+        </div>
+        <p style="color:var(--text-muted);font-size:14px;margin:0;max-width:280px;">A quiet local runtime for open-weight models.</p>
+      </div>
+      <div><h5>Product</h5><ul><li><a href="index.html#download">Download</a></li><li><a href="index.html#models">Models</a></li><li><a href="docs.html#api">API</a></li><li><a href="#">Changelog</a></li></ul></div>
+      <div><h5>Resources</h5><ul><li><a href="docs.html">Docs</a></li><li><a href="docs.html#getting-started">Getting started</a></li><li><a href="#">Community</a></li><li><a href="#">GitHub</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="#">About</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="#">Careers</a></li><li><a href="signin.html">Sign in</a></li></ul></div>
+    </div>
+    <div class="footer-foot">
+      <div>© 2026 Tessera</div>
+      <div><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Status</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="theme.js" defer></script>
+</body>
+</html>
