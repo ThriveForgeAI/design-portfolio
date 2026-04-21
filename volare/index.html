@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Volare — Automobili Volare</title>
+<meta name="description" content="Italian super sports cars. Automobili Volare designs, engineers and builds the most exhilarating machines on the road." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css" />
+<style>
+  /* Page-specific styles for the homepage */
+
+  .scene--hero .scene-bg {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 100%),
+      url("https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=2600&q=85");
+  }
+  .scene--model1 .scene-bg {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0) 40%, rgba(0,0,0,0.92) 100%),
+      url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2600&q=85");
+  }
+  .scene--race .scene-bg {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 100%),
+      url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2600&q=85");
+  }
+
+  .lineup {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .car {
+    position: relative;
+    background: var(--charcoal);
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    display: flex; flex-direction: column; justify-content: space-between;
+    color: var(--white);
+  }
+  .car-img {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    transition: transform .6s ease;
+  }
+  .car::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 100%);
+  }
+  .car:hover .car-img { transform: scale(1.05); }
+  .car-top, .car-bot {
+    position: relative; z-index: 2;
+    padding: 22px 24px;
+  }
+  .car-top {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    opacity: 0.9;
+  }
+  .car-badge {
+    background: var(--steel); color: var(--black);
+    padding: 5px 10px;
+    font-size: 10px; font-weight: 500; letter-spacing: 1px;
+  }
+  .car h3 {
+    font-family: var(--font);
+    font-weight: 400;
+    font-size: clamp(26px, 2.6vw, 40px);
+    line-height: 1.0;
+    text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .car .spec {
+    font-size: 12px; letter-spacing: 1.5px;
+    text-transform: uppercase; opacity: 0.8;
+    margin-bottom: 16px;
+  }
+  .car-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+    border-bottom: 1px solid var(--white);
+    padding-bottom: 4px;
+  }
+  .car-link:hover { color: var(--gold); border-bottom-color: var(--gold); }
+  .car--aurelio .car-img { background-image: url("https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=1400&q=85"); }
+  .car--tempesta .car-img { background-image: url("https://images.unsplash.com/photo-1566473965997-3de9c817e938?auto=format&fit=crop&w=1400&q=85"); }
+  .car--corsa .car-img { background-image: url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=85"); }
+
+  .stats {
+    background: var(--iron);
+    padding: 72px 48px;
+    border-top: 1px solid var(--charcoal);
+    border-bottom: 1px solid var(--charcoal);
+  }
+  .stats-grid {
+    max-width: 1440px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .stat { padding-right: 24px; border-right: 1px solid var(--charcoal); }
+  .stat:last-child { border-right: 0; }
+  .stat .n {
+    font-family: var(--font); font-weight: 400;
+    font-size: clamp(40px, 4.5vw, 68px);
+    line-height: 1; letter-spacing: -0.4px;
+    text-transform: uppercase; color: var(--white);
+    margin-bottom: 12px;
+  }
+  .stat .n em { color: var(--gold); font-style: normal; font-weight: 400; }
+  .stat .l {
+    font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--ash);
+    line-height: 1.4;
+  }
+
+  .news {
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 24px;
+  }
+  .news-card {
+    position: relative;
+    background: var(--charcoal);
+    overflow: hidden;
+    min-height: 400px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .news-card .bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    transition: transform .5s ease;
+  }
+  .news-card::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.92) 100%);
+  }
+  .news-card:hover .bg { transform: scale(1.05); }
+  .news-body { position: relative; z-index: 2; padding: 28px; }
+  .news-tag {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 10px;
+  }
+  .news-card h3 {
+    font-family: var(--font); font-weight: 400;
+    font-size: 22px; line-height: 1.15;
+    letter-spacing: 0.2px; text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+  .news-card .meta {
+    font-size: 11px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--ash);
+  }
+  .news--1 .bg { background-image: url("https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1800&q=85"); }
+  .news--2 .bg { background-image: url("https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=85"); }
+  .news--3 .bg { background-image: url("https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1400&q=85"); }
+
+  .heritage {
+    position: relative;
+    background: var(--black);
+    padding: 144px 48px;
+    overflow: hidden;
+  }
+  .heritage-bg {
+    position: absolute; inset: 0;
+    background: url("https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=2400&q=80") center/cover;
+    opacity: 0.28;
+    filter: grayscale(1) contrast(1.15);
+  }
+  .heritage::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.92) 100%);
+  }
+  .heritage-inner {
+    position: relative; z-index: 2;
+    max-width: 880px; margin: 0 auto;
+    text-align: center;
+  }
+  .heritage h2 {
+    font-family: var(--font); font-weight: 400;
+    font-size: clamp(36px, 6vw, 88px);
+    line-height: 0.95; text-transform: uppercase;
+    letter-spacing: -0.2px;
+    margin: 0 0 20px;
+  }
+  .heritage h2 em { font-style: normal; color: var(--gold); font-weight: 400; }
+  .heritage p {
+    font-size: 17px; line-height: 1.65;
+    color: var(--smoke); opacity: 0.9;
+    max-width: 620px; margin: 0 auto 36px;
+  }
+
+  @media (max-width: 1024px) {
+    .lineup { grid-template-columns: repeat(2, 1fr); }
+    .news { grid-template-columns: 1fr 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .lineup, .news { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .stat { border-right: 0; border-bottom: 1px solid var(--charcoal); padding-bottom: 16px; }
+    .heritage { padding-top: 96px; padding-bottom: 96px; padding-left: 20px; padding-right: 20px; }
+    .section-dark { padding-top: 64px; padding-bottom: 64px; }
+    .stats { padding: 48px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-left">
+    <button class="menu-btn" aria-label="Open menu" data-menu-open>
+      <span class="bars" aria-hidden="true"><span></span></span>
+      <span class="menu-label">Menu</span>
+    </button>
+  </div>
+  <a href="index.html" class="brand-bull" aria-label="Volare home">
+    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+      <path d="M32 4l24 8v18c0 14-10 24-24 30C18 54 8 44 8 30V12l24-8z"/>
+      <path d="M20 26c3-4 7-6 12-6s9 2 12 6M24 32c2 3 5 4 8 4s6-1 8-4M28 40c1 2 2 3 4 3s3-1 4-3" />
+    </svg>
+    <span class="brand-wordmark">Volare</span>
+  </a>
+  <div class="nav-right">
+    <button aria-label="Search">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    </button>
+    <button aria-label="Bookmarks">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12v18l-6-4-6 4z"/></svg>
+    </button>
+    <span class="label" style="font-size:12px;opacity:0.8;">EN</span>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero -->
+  <section class="scene scene--hero">
+    <div class="scene-bg" aria-hidden="true"></div>
+    <div class="scene-inner">
+      <p class="eyebrow">World premiere · Frankfurt 2026</p>
+      <h1 class="display">Aurelio <em>V12</em></h1>
+      <p class="display-sub">Twelve cylinders. Zero compromise.</p>
+      <p class="lede">A naturally aspirated V12 rebuilt for a new era, married to a featherweight carbon monocoque and an all-wheel-drive hybrid system born on the racetrack.</p>
+      <div class="btn-row">
+        <a href="models.html" class="btn-gold">Discover Aurelio <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <a href="#configure" class="btn-ghost">Start configuration</a>
+      </div>
+    </div>
+    <button class="hex" aria-label="Pause video">
+      <svg viewBox="0 0 64 64"><polygon points="32,4 58,18 58,46 32,60 6,46 6,18" /></svg>
+      <span class="play"><i></i><i></i></span>
+    </button>
+    <div class="data-rail">
+      <div>Power<span>830 cv</span></div>
+      <div>0–100 km/h<span>2.4 s</span></div>
+      <div>Top speed<span>365 km/h</span></div>
+      <div>Weight<span>1,560 kg</span></div>
+    </div>
+    <div class="progress" aria-hidden="true"></div>
+  </section>
+
+  <!-- Model lineup -->
+  <section class="section-dark" id="models">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">The lineup</p>
+          <h2>Three machines. One obsession.</h2>
+        </div>
+        <a href="models.html" class="link">View all models →</a>
+      </div>
+      <div class="lineup">
+        <article class="car car--aurelio">
+          <div class="car-img" aria-hidden="true"></div>
+          <div class="car-top"><span>Super Sports</span><span class="car-badge">New</span></div>
+          <div class="car-bot">
+            <h3>Aurelio V12</h3>
+            <div class="spec">830 cv · 2.4 s · 365 km/h</div>
+            <a class="car-link" href="models.html">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          </div>
+        </article>
+        <article class="car car--tempesta">
+          <div class="car-img" aria-hidden="true"></div>
+          <div class="car-top"><span>Super SUV</span><span class="car-badge">2026</span></div>
+          <div class="car-bot">
+            <h3>Tempesta</h3>
+            <div class="spec">666 cv · 3.3 s · 310 km/h</div>
+            <a class="car-link" href="models.html">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          </div>
+        </article>
+        <article class="car car--corsa">
+          <div class="car-img" aria-hidden="true"></div>
+          <div class="car-top"><span>Racing</span><span class="car-badge">GT3</span></div>
+          <div class="car-bot">
+            <h3>Corsa GT3</h3>
+            <div class="spec">550 cv · Homologated · Track only</div>
+            <a class="car-link" href="models.html">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Second cinematic scene -->
+  <section class="scene scene--model1" id="aurelio">
+    <div class="scene-bg" aria-hidden="true"></div>
+    <div class="scene-inner">
+      <p class="eyebrow">Aurelio V12</p>
+      <h2 class="display">Forged from <em>fire.</em></h2>
+      <p class="lede">Every Aurelio leaves Sant'Agata with 6.5 litres of naturally aspirated obsession under its rear deck. The induction note alone is worth the flight.</p>
+      <div class="btn-row">
+        <a href="models.html" class="btn-gold">Technical sheet</a>
+        <a href="#tour" class="btn-ghost">Virtual tour</a>
+      </div>
+    </div>
+    <div class="progress" aria-hidden="true"></div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat"><div class="n"><em>830</em> cv</div><div class="l">Peak output, V12 naturally aspirated</div></div>
+      <div class="stat"><div class="n">9,500 <em>rpm</em></div><div class="l">Red line — music, not engineering</div></div>
+      <div class="stat"><div class="n">2.4<em>s</em></div><div class="l">0 to 100 km/h with launch control</div></div>
+      <div class="stat"><div class="n">365<em>km/h</em></div><div class="l">Top speed, homologated road</div></div>
+    </div>
+  </section>
+
+  <!-- Race scene -->
+  <section class="scene scene--race">
+    <div class="scene-bg" aria-hidden="true"></div>
+    <div class="scene-inner">
+      <p class="eyebrow">Squadra Corse · Motorsport division</p>
+      <h2 class="display">Built on <em>track.</em><br/>Proven on road.</h2>
+      <p class="lede">Three championships in a single season. Every component in the Aurelio started its life on the Corsa GT3 — and earned its place here.</p>
+      <div class="btn-row">
+        <a href="motorsport.html" class="btn-gold">Enter racing</a>
+        <a href="motorsport.html" class="btn-ghost">2026 calendar</a>
+      </div>
+    </div>
+    <div class="progress" aria-hidden="true"></div>
+  </section>
+
+  <!-- News grid -->
+  <section class="section-dark" id="news">
+    <div class="section-inner">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Latest from Sant'Agata</p>
+          <h2>News &amp; stories.</h2>
+        </div>
+        <a href="#all-news" class="link">All stories →</a>
+      </div>
+      <div class="news">
+        <article class="news-card news--1">
+          <div class="bg" aria-hidden="true"></div>
+          <div class="news-body">
+            <div class="news-tag">World Premiere</div>
+            <h3>Aurelio V12 makes its public debut at Frankfurt.</h3>
+            <div class="meta">18 · April · 2026 · 3 min read</div>
+          </div>
+        </article>
+        <article class="news-card news--2">
+          <div class="bg" aria-hidden="true"></div>
+          <div class="news-body">
+            <div class="news-tag">Motorsport</div>
+            <h3>Corsa GT3 wins Spa 24h in a one-two finish.</h3>
+            <div class="meta">11 · April · 2026</div>
+          </div>
+        </article>
+        <article class="news-card news--3">
+          <div class="bg" aria-hidden="true"></div>
+          <div class="news-body">
+            <div class="news-tag">Heritage</div>
+            <h3>Sixty years of the V12, in twelve objects.</h3>
+            <div class="meta">02 · April · 2026</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Heritage -->
+  <section class="heritage">
+    <div class="heritage-bg" aria-hidden="true"></div>
+    <div class="heritage-inner">
+      <p class="eyebrow" style="justify-content:center;display:inline-flex;">Since 1963</p>
+      <h2>Sixty years of <em>disobedience.</em></h2>
+      <p>Volare has never chased. It has never been polite. Every car we have ever built has been a direct, unreasonable answer to the question: what if we simply refused to compromise?</p>
+      <a href="#story" class="btn-gold">Read the story</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="wordmark">Volare</div>
+        <p>Automobili Volare S.p.A. — Sant'Agata Bolognese, Italia. Designed, engineered and built in Italy since 1963.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 114 0v4M12 10v7"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h5>Models</h5>
+        <ul>
+          <li><a href="models.html">Aurelio V12</a></li>
+          <li><a href="models.html">Tempesta</a></li>
+          <li><a href="models.html">Corsa GT3</a></li>
+          <li><a href="#">Heritage</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Experience</h5>
+        <ul>
+          <li><a href="#">Configure</a></li>
+          <li><a href="#">Find a dealer</a></li>
+          <li><a href="#">Virtual tour</a></li>
+          <li><a href="#">Events</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Racing</h5>
+        <ul>
+          <li><a href="motorsport.html">Squadra Corse</a></li>
+          <li><a href="#">Super Trofeo</a></li>
+          <li><a href="motorsport.html">Calendar</a></li>
+          <li><a href="#">Drivers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About Volare</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Investors</a></li>
+          <li><a href="contact.html">Press &amp; media</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-foot">
+      <div>© 2026 Automobili Volare S.p.A. — P.IVA 00592530375</div>
+      <div>Privacy · Cookies · Legal · Suppliers</div>
+    </div>
+  </div>
+</footer>
+
+<script src="menu.js"></script>
+
+</body>
+</html>

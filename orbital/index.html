@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Orbital — Making humanity multi-planetary</title>
+<meta name="description" content="Orbital designs, manufactures and launches advanced rockets and spacecraft." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000;
+    --spectral: #f0f0fa;
+    --ghost: rgba(240,240,250,0.1);
+    --ghost-border: rgba(240,240,250,0.35);
+    --ghost-bright: rgba(240,240,250,0.2);
+    --font: 'D-DIN', 'Saira', Arial, Verdana, sans-serif;
+    --font-bold: 'D-DIN-Bold', 'Saira', Arial, Verdana, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black); color: var(--spectral);
+    font-family: var(--font); font-size: 16px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--spectral); text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+  img, svg { display: block; max-width: 100%; }
+
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    padding: 24px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(180deg, rgba(0,0,0,0.55), transparent);
+  }
+  .wordmark {
+    font-family: var(--font-bold);
+    font-weight: 700; font-size: 22px;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--spectral);
+  }
+  .nav-links {
+    display: flex; gap: 30px;
+    font-family: var(--font);
+    font-weight: 700; font-size: 13px;
+    letter-spacing: 1.17px; text-transform: uppercase;
+    line-height: 0.94;
+  }
+  .nav-links a:hover { opacity: 0.75; }
+  .nav-right { display: flex; align-items: center; gap: 20px; font-weight: 700; font-size: 13px; letter-spacing: 1.17px; text-transform: uppercase; }
+  .burger {
+    display: none; background: transparent; border: 0; color: var(--spectral);
+    width: 32px; height: 24px; position: relative;
+  }
+  .burger span, .burger span::before, .burger span::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 2px; background: var(--spectral);
+  }
+  .burger span { top: 50%; transform: translateY(-50%); }
+  .burger span::before { top: -8px; }
+  .burger span::after { top: 8px; }
+
+  .scene {
+    position: relative; min-height: 100vh;
+    display: flex; align-items: flex-end;
+    overflow: hidden;
+    background-color: #0a0a10;
+    background-size: cover; background-position: center;
+  }
+  .scene::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.75) 100%);
+    pointer-events: none;
+  }
+  .scene-content {
+    position: relative; z-index: 2;
+    padding: 0 40px 80px;
+    max-width: 1400px; width: 100%; margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-family: var(--font);
+    font-weight: 700; font-size: 13px;
+    letter-spacing: 1.17px; line-height: 0.94;
+    text-transform: uppercase;
+    margin: 0 0 14px; opacity: 0.92;
+  }
+  .scene h1, .scene h2.display {
+    font-family: var(--font-bold);
+    font-weight: 700;
+    font-size: clamp(32px, 5vw, 54px);
+    line-height: 1.0; letter-spacing: 0.96px;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+  }
+  .scene p.lede {
+    max-width: 540px;
+    font-size: 16px; line-height: 1.65;
+    color: var(--spectral); opacity: 0.92;
+    margin: 0 0 30px;
+  }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 28px;
+    background: var(--ghost); color: var(--spectral);
+    border: 1px solid var(--ghost-border);
+    border-radius: 32px;
+    font-family: var(--font);
+    font-weight: 700; font-size: 13px;
+    letter-spacing: 1.17px; text-transform: uppercase;
+    transition: background .2s ease;
+  }
+  .btn-ghost:hover { background: var(--ghost-bright); }
+
+  .scene--hero {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.75) 100%),
+      url("https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=2400&q=80");
+  }
+  .scene--earth {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.75) 100%),
+      url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2400&q=80");
+  }
+  .scene--mars {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.8) 100%),
+      url("https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&w=2400&q=80");
+  }
+  .scene--station {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.8) 100%),
+      url("https://images.unsplash.com/photo-1446776877081-d282a0f896e2?auto=format&fit=crop&w=2400&q=80");
+  }
+  .scene--moon {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.75) 100%),
+      url("https://images.unsplash.com/photo-1532693322450-2cb5c511067d?auto=format&fit=crop&w=2400&q=80");
+  }
+
+  .data {
+    position: absolute; left: 40px; right: 40px; bottom: 28px;
+    display: flex; gap: 30px; justify-content: space-between; flex-wrap: wrap;
+    font-family: var(--font);
+    font-size: 10px; letter-spacing: 1px;
+    text-transform: uppercase; line-height: 0.94;
+    color: var(--spectral); opacity: 0.75;
+    z-index: 2;
+  }
+  .data div span {
+    display: block;
+    font-family: var(--font);
+    font-weight: 700; font-size: 13px;
+    letter-spacing: 1.17px; margin-top: 4px;
+    opacity: 1;
+  }
+
+  .scroll-cue {
+    position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%);
+    font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--spectral); opacity: 0.7; z-index: 2;
+    display: flex; flex-direction: column; gap: 10px; align-items: center;
+  }
+  .scroll-cue::after {
+    content: ""; width: 1px; height: 40px;
+    background: linear-gradient(180deg, rgba(240,240,250,0.6), rgba(240,240,250,0));
+    animation: cue 2.2s ease-in-out infinite;
+  }
+  @keyframes cue {
+    0% { transform: scaleY(0.2); transform-origin: top; opacity: 0.2; }
+    60% { transform: scaleY(1); opacity: 1; }
+    100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+  }
+
+  .stats-scene { background: var(--black); padding: 120px 40px; }
+  .stats-grid {
+    max-width: 1400px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px;
+    border-top: 1px solid rgba(240,240,250,0.15);
+    padding-top: 60px;
+  }
+  .stat { padding: 20px 0; }
+  .stat .n {
+    font-family: var(--font-bold); font-weight: 700;
+    font-size: clamp(42px, 5vw, 64px); line-height: 1;
+    letter-spacing: 0.96px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .stat .l {
+    font-family: var(--font); font-weight: 400; font-size: 12px;
+    letter-spacing: 1px; text-transform: uppercase; line-height: 0.94;
+    opacity: 0.7;
+  }
+  .stats-head { max-width: 1400px; margin: 0 auto; }
+  .stats-head h2 {
+    font-family: var(--font-bold); font-weight: 700;
+    font-size: clamp(28px, 3.2vw, 40px);
+    letter-spacing: 0.96px; text-transform: uppercase;
+    line-height: 1.0; margin: 0 0 12px;
+  }
+  .stats-head p {
+    max-width: 540px; font-size: 16px; line-height: 1.6;
+    opacity: 0.85; margin: 0 0 20px;
+  }
+
+  footer {
+    background: var(--black);
+    padding: 60px 40px 40px;
+    border-top: 1px solid rgba(240,240,250,0.15);
+  }
+  .footer-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 40px; flex-wrap: wrap;
+  }
+  .footer-nav {
+    display: flex; gap: 40px; flex-wrap: wrap;
+    font-family: var(--font); font-weight: 700;
+    font-size: 12px; letter-spacing: 1.17px; text-transform: uppercase;
+  }
+  .footer-nav a { opacity: 0.8; }
+  .footer-nav a:hover { opacity: 1; }
+  .copyright { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.6; }
+
+  @media (max-width: 900px) {
+    .nav { padding: 18px 20px; }
+    .nav-links { display: none; }
+    .burger { display: block; }
+    .scene-content { padding: 0 20px 80px; }
+    .data { left: 20px; right: 20px; flex-direction: column; gap: 14px; }
+    .stats-scene { padding: 80px 20px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; padding-top: 40px; }
+    footer { padding: 40px 20px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a href="#top" class="wordmark" aria-label="Orbital home">Orbital</a>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="#starship">Starship</a>
+    <a href="#falcon">Falcon 9</a>
+    <a href="#dragon">Dragon</a>
+    <a href="#mission">Mission</a>
+    <a href="#shop">Shop</a>
+    <a href="#careers">Careers</a>
+  </nav>
+  <div class="nav-right">
+    <a href="#launch">Next launch</a>
+    <button class="burger" aria-label="Open menu"><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="scene scene--hero" id="starship">
+    <div class="scene-content">
+      <p class="eyebrow">Upcoming flight · Starship IFT-12</p>
+      <h1>Starship — next generation heavy lift</h1>
+      <p class="lede">A fully reusable transportation system designed to carry crew and cargo to Earth orbit, the Moon, Mars and beyond.</p>
+      <a href="#starship-more" class="btn-ghost">Learn more →</a>
+    </div>
+    <div class="data">
+      <div>Mission<span>IFT-12</span></div>
+      <div>Pad<span>Starbase OLM-A</span></div>
+      <div>Window<span>T-12:22:08</span></div>
+      <div>Payload<span>Starlink V3</span></div>
+    </div>
+    <div class="scroll-cue">Scroll</div>
+  </section>
+
+  <section class="scene scene--earth" id="falcon">
+    <div class="scene-content">
+      <p class="eyebrow">Operational · 400+ successful missions</p>
+      <h2 class="display">Falcon 9 — the workhorse of orbit</h2>
+      <p class="lede">A two-stage reusable rocket that has carried astronauts, satellites and cargo to low Earth orbit and beyond.</p>
+      <a href="#falcon-more" class="btn-ghost">Explore Falcon 9 →</a>
+    </div>
+    <div class="data">
+      <div>Total launches<span>412</span></div>
+      <div>Landings<span>389</span></div>
+      <div>Reflights<span>362</span></div>
+      <div>Payload to LEO<span>22,800 kg</span></div>
+    </div>
+  </section>
+
+  <section class="scene scene--station" id="dragon">
+    <div class="scene-content">
+      <p class="eyebrow">Crew &amp; cargo · Station delivery</p>
+      <h2 class="display">Dragon — taking people to orbit</h2>
+      <p class="lede">The only spacecraft currently flying with the capability to return significant amounts of cargo — and crew — to Earth.</p>
+      <a href="#dragon-more" class="btn-ghost">Meet Dragon →</a>
+    </div>
+    <div class="data">
+      <div>Crew capacity<span>7</span></div>
+      <div>Cargo<span>6,000 kg</span></div>
+      <div>Missions<span>48</span></div>
+      <div>ISS dockings<span>41</span></div>
+    </div>
+  </section>
+
+  <section class="scene scene--mars" id="mission">
+    <div class="scene-content">
+      <p class="eyebrow">Long-term mission</p>
+      <h2 class="display">Making life multi-planetary</h2>
+      <p class="lede">Humanity is most interesting when it is at the edge of the possible. Orbital exists to shorten the distance to Mars.</p>
+      <a href="#mars" class="btn-ghost">The plan →</a>
+    </div>
+    <div class="data">
+      <div>Target<span>Mars</span></div>
+      <div>Distance<span>54.6 M km</span></div>
+      <div>Transit time<span>≈ 6 months</span></div>
+      <div>First crew<span>2030s</span></div>
+    </div>
+  </section>
+
+  <section class="stats-scene" id="record">
+    <div class="stats-head">
+      <p class="eyebrow">Operational record</p>
+      <h2>A decade of flight, in numbers.</h2>
+      <p>Reusability took rockets from single-use hardware to routine infrastructure. The record below is the engine of everything else we do.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat"><div class="n">460+</div><div class="l">Total missions flown</div></div>
+      <div class="stat"><div class="n">11</div><div class="l">Vehicle flights per booster (max)</div></div>
+      <div class="stat"><div class="n">99.6%</div><div class="l">Mission success rate</div></div>
+      <div class="stat"><div class="n">7,200+</div><div class="l">Satellites delivered to orbit</div></div>
+    </div>
+  </section>
+
+  <section class="scene scene--moon" id="careers">
+    <div class="scene-content">
+      <p class="eyebrow">Join the mission</p>
+      <h2 class="display">The hardest problems, the best company.</h2>
+      <p class="lede">Engineers, technicians, scientists. Orbital is hiring across propulsion, avionics, structures, and flight software.</p>
+      <a href="#jobs" class="btn-ghost">View open roles →</a>
+    </div>
+    <div class="data">
+      <div>Open roles<span>1,240</span></div>
+      <div>Locations<span>6</span></div>
+      <div>Launch sites<span>Starbase · LC-39A · SLC-40</span></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="wordmark" style="font-size:18px;margin-bottom:10px;">Orbital</div>
+      <div class="copyright">© 2026 Orbital Systems, Inc.</div>
+    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="#">Privacy</a>
+      <a href="#">Suppliers</a>
+      <a href="#">Careers</a>
+      <a href="#">Contact</a>
+      <a href="#">Press</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>

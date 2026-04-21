@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Models — Automobili Volare</title>
+<meta name="description" content="The Volare lineup — Aurelio V12, Tempesta and Corsa GT3." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css" />
+<style>
+  .breadcrumb-bar {
+    padding: 88px 48px 24px;
+    max-width: 1440px; margin: 0 auto;
+    display: flex; align-items: center; gap: 18px;
+  }
+
+  .models-page {
+    background: var(--black); min-height: 100vh;
+    padding-bottom: 96px;
+  }
+  .models-wrap {
+    display: grid; grid-template-columns: 320px 1fr;
+    max-width: 1440px; margin: 0 auto;
+    padding: 20px 48px 0;
+    gap: 56px;
+    min-height: 640px;
+  }
+
+  .models-aside h2 {
+    font-family: var(--font); font-weight: 400;
+    font-size: clamp(36px, 4.5vw, 64px);
+    line-height: 0.95; letter-spacing: -0.3px;
+    text-transform: uppercase;
+    margin: 0 0 36px;
+    display: flex; align-items: center; gap: 18px;
+  }
+  .models-aside h2 .back-arr {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px;
+  }
+  .models-aside h2 .back-arr svg { width: 16px; height: 16px; }
+  .model-list { list-style: none; padding: 0; margin: 0; }
+  .model-list li {
+    border-bottom: 1px solid var(--charcoal);
+  }
+  .model-list button {
+    display: flex; justify-content: space-between; align-items: center;
+    width: 100%; padding: 20px 0;
+    background: transparent; border: 0; cursor: pointer;
+    text-align: left; font-family: inherit;
+    color: var(--white);
+    transition: color .15s ease, padding-left .2s ease;
+  }
+  .model-list button .name {
+    font-size: 18px; letter-spacing: 1px;
+    text-transform: uppercase; font-weight: 500;
+  }
+  .model-list button .view-all {
+    font-size: 12px; letter-spacing: 0.5px;
+    color: var(--smoke); text-transform: none;
+    opacity: 0; transition: opacity .15s ease;
+  }
+  .model-list button:hover { padding-left: 4px; }
+  .model-list button:hover .name { color: var(--gold); }
+  .model-list button.active .name { color: var(--gold); }
+  .model-list button.active .view-all { opacity: 1; }
+  .model-list li:has(button.active) { border-bottom-color: var(--gold); }
+  .model-list button.inactive { cursor: not-allowed; }
+  .model-list button.inactive .name { color: var(--graphite); }
+  .model-list button.inactive:hover { padding-left: 0; }
+  .model-list button.inactive:hover .name { color: var(--graphite); }
+
+  .models-main {
+    min-height: 560px;
+    display: flex; flex-direction: column;
+  }
+
+  .car-pane { display: none; flex-direction: column; flex: 1; }
+  .car-pane.active { display: flex; animation: fadeIn .4s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .variant-tabs-row {
+    display: flex; gap: 56px; justify-content: flex-end;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--charcoal);
+    margin-bottom: 40px;
+  }
+  .variant-tabs-row button {
+    background: transparent; border: 0;
+    color: var(--ash);
+    font-family: inherit; font-size: 13px;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 8px 0 14px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -18px;
+    cursor: pointer; transition: color .15s ease, border-color .15s ease;
+  }
+  .variant-tabs-row button.active { color: var(--white); border-bottom-color: var(--gold); }
+  .variant-tabs-row button:hover:not(.active) { color: var(--white); }
+
+  .car-photo-main {
+    flex: 1;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    min-height: 380px;
+    animation: floatc 7s ease-in-out infinite alternate;
+  }
+  @keyframes floatc {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-8px); }
+  }
+
+  .car-ctas {
+    display: flex; justify-content: center; gap: 14px;
+    flex-wrap: wrap; padding-top: 36px;
+  }
+  .car-disclaimer {
+    margin-top: 24px;
+    font-size: 10px; letter-spacing: 0.5px;
+    color: var(--ash);
+    text-align: center;
+    max-width: 820px; margin-left: auto; margin-right: auto;
+    line-height: 1.6;
+  }
+
+  .car-photo-aurelio { background-image: url("https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=2400&q=90"); }
+  .car-photo-tempesta { background-image: url("https://images.unsplash.com/photo-1566473965997-3de9c817e938?auto=format&fit=crop&w=2400&q=90"); }
+  .car-photo-corsa { background-image: url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2400&q=90"); }
+
+  /* Specs section below */
+  .specs-section {
+    background: var(--iron);
+    border-top: 1px solid var(--charcoal);
+    border-bottom: 1px solid var(--charcoal);
+    padding: 80px 48px;
+    margin-top: 64px;
+  }
+  .specs-wrap {
+    max-width: 1440px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1.3fr;
+    gap: 72px;
+  }
+  .specs-wrap .copy h3 {
+    font-family: var(--font); font-weight: 400;
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.0; letter-spacing: -0.2px;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+  }
+  .specs-wrap .copy p {
+    font-size: 16px; line-height: 1.7;
+    color: var(--smoke); opacity: 0.9;
+    margin: 0 0 18px;
+  }
+  .specs-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 24px 32px;
+  }
+  .spec-tile {
+    border-top: 1px solid var(--charcoal);
+    padding-top: 14px;
+  }
+  .spec-tile .lbl {
+    font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--ash);
+    margin-bottom: 8px;
+  }
+  .spec-tile .val {
+    font-family: var(--font); font-weight: 400;
+    font-size: 30px; letter-spacing: -0.2px;
+    text-transform: uppercase;
+    color: var(--white); line-height: 1;
+  }
+  .spec-tile .val em {
+    color: var(--gold); font-style: normal; font-weight: 400;
+    font-size: 13px; letter-spacing: 1px; margin-left: 6px;
+  }
+  .specs-pane { display: none; }
+  .specs-pane.active { display: block; }
+
+  @media (max-width: 900px) {
+    .breadcrumb-bar { padding: 84px 20px 16px; }
+    .models-wrap { grid-template-columns: 1fr; gap: 24px; padding: 12px 20px 0; min-height: 0; }
+    .models-aside h2 { font-size: 32px; margin: 0 0 20px; }
+    .model-list { display: flex; gap: 22px; overflow-x: auto; padding-bottom: 6px; }
+    .model-list li { border-bottom: 0; white-space: nowrap; }
+    .model-list button { padding: 8px 0; }
+    .model-list li:has(button.active) { border-bottom: 0; }
+    .variant-tabs-row { justify-content: flex-start; gap: 32px; overflow-x: auto; }
+    .car-photo-main { min-height: 240px; }
+    .specs-section { padding: 56px 20px; margin-top: 40px; }
+    .specs-wrap { grid-template-columns: 1fr; gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-left">
+    <button class="menu-btn" aria-label="Open menu" data-menu-open>
+      <span class="bars" aria-hidden="true"><span></span></span>
+      <span class="menu-label">Menu</span>
+    </button>
+  </div>
+  <a href="index.html" class="brand-bull" aria-label="Volare home">
+    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+      <path d="M32 4l24 8v18c0 14-10 24-24 30C18 54 8 44 8 30V12l24-8z"/>
+      <path d="M20 26c3-4 7-6 12-6s9 2 12 6M24 32c2 3 5 4 8 4s6-1 8-4M28 40c1 2 2 3 4 3s3-1 4-3" />
+    </svg>
+    <span class="brand-wordmark">Volare</span>
+  </a>
+  <div class="nav-right">
+    <button aria-label="Search"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+    <button aria-label="Bookmarks"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button>
+    <span class="label" style="font-size:12px;opacity:0.8;">EN</span>
+  </div>
+</header>
+
+<div class="breadcrumb-bar">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="index.html">Home</a>
+    <span class="sep">|</span>
+    <span class="current">Models</span>
+  </nav>
+</div>
+
+<main class="models-page" id="top">
+  <div class="models-wrap">
+    <aside class="models-aside">
+      <h2>
+        <a href="index.html" class="back-arr" aria-label="Back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg>
+        </a>
+        Models
+      </h2>
+      <ul class="model-list" role="tablist">
+        <li><button class="active" data-model="aurelio" role="tab"><span class="name">Aurelio V12</span><span class="view-all">View all</span></button></li>
+        <li><button data-model="tempesta" role="tab"><span class="name">Tempesta</span><span class="view-all">View all</span></button></li>
+        <li><button data-model="corsa" role="tab"><span class="name">Corsa GT3</span><span class="view-all">View all</span></button></li>
+        <li><button class="inactive"><span class="name">Pre-Owned</span></button></li>
+        <li><button class="inactive"><span class="name">Few-Off</span></button></li>
+        <li><button class="inactive"><span class="name">Concept</span></button></li>
+        <li><button class="inactive"><span class="name">Customization</span></button></li>
+      </ul>
+    </aside>
+
+    <section class="models-main">
+
+      <article class="car-pane active" data-car="aurelio">
+        <nav class="variant-tabs-row">
+          <button class="active">Aurelio V12</button>
+          <button>Aurelio Spyder</button>
+          <button>Aurelio SVJ</button>
+        </nav>
+        <div class="car-photo-main car-photo-aurelio" role="img" aria-label="Aurelio V12"></div>
+        <div class="car-ctas">
+          <a href="#configure" class="btn-gold">Start configuration
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 20,7 20,17 12,22 4,17 4,7"/></svg>
+          </a>
+          <a href="#explore" class="btn-white">Explore the model <span class="arrow-right"></span></a>
+        </div>
+        <p class="car-disclaimer">
+          Naturally aspirated 6.5 L V12 · 830 cv · 2.4 s 0–100 km/h · 365 km/h top speed. Combined fuel economy and emissions values for reference only; homologation varies by market. Your performance may vary.
+        </p>
+      </article>
+
+      <article class="car-pane" data-car="tempesta">
+        <nav class="variant-tabs-row">
+          <button class="active">Tempesta</button>
+          <button>Tempesta Performante</button>
+          <button>Tempesta S</button>
+        </nav>
+        <div class="car-photo-main car-photo-tempesta" role="img" aria-label="Tempesta"></div>
+        <div class="car-ctas">
+          <a href="#configure" class="btn-gold">Start configuration
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 20,7 20,17 12,22 4,17 4,7"/></svg>
+          </a>
+          <a href="#explore" class="btn-white">Explore the model <span class="arrow-right"></span></a>
+        </div>
+        <p class="car-disclaimer">
+          4.0 L twin-turbo V8 hybrid · 666 cv · 3.3 s 0–100 km/h · 310 km/h top speed. Combined energy consumption (electricity + gasoline): 48 MPGe; combined fuel economy (gasoline only): 20 MPG. Your mileage may vary.
+        </p>
+      </article>
+
+      <article class="car-pane" data-car="corsa">
+        <nav class="variant-tabs-row">
+          <button class="active">Corsa GT3</button>
+          <button>Corsa Super Trofeo</button>
+          <button>Corsa EVO</button>
+        </nav>
+        <div class="car-photo-main car-photo-corsa" role="img" aria-label="Corsa GT3"></div>
+        <div class="car-ctas">
+          <a href="motorsport.html" class="btn-gold">Customer programme
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 20,7 20,17 12,22 4,17 4,7"/></svg>
+          </a>
+          <a href="#explore" class="btn-white">Explore the model <span class="arrow-right"></span></a>
+        </div>
+        <p class="car-disclaimer">
+          5.2 L V10 · 550 cv · 6-speed sequential · 1,250 kg. FIA GT3 homologated racing car — not intended for road use. Three championships won in 2025.
+        </p>
+      </article>
+
+    </section>
+  </div>
+
+  <!-- Specs deep-dive -->
+  <section class="specs-section">
+    <div class="specs-wrap">
+      <div class="copy">
+        <p class="eyebrow">Technical sheet</p>
+
+        <div class="specs-pane active" data-car="aurelio">
+          <h3>Aurelio V12 — <em style="color:var(--gold);font-style:normal;">The pure one.</em></h3>
+          <p>Six and a half litres of naturally aspirated obsession, wrapped in a monocoque of forged carbon and tuned to sing to nine-and-a-half thousand rpm. The Aurelio is the purest expression of Volare's refusal to compromise.</p>
+          <p>Every Aurelio is hand-built in Sant'Agata, with a delivery time of approximately fourteen months from configuration.</p>
+        </div>
+        <div class="specs-pane" data-car="tempesta">
+          <h3>Tempesta — <em style="color:var(--gold);font-style:normal;">The daily supercar.</em></h3>
+          <p>The super SUV rewritten from first principles. Four doors, four seats, four-wheel-drive — and a powertrain borrowed from the Corsa GT3. The Tempesta is how a supercar makes it through a Sant'Agata winter without apologising.</p>
+        </div>
+        <div class="specs-pane" data-car="corsa">
+          <h3>Corsa GT3 — <em style="color:var(--gold);font-style:normal;">The grid car.</em></h3>
+          <p>The racing car at the root of everything Volare makes. A naturally aspirated V10 tuned to FIA regulations, a sequential gearbox shared with Formula machinery, and a body homologated for every major GT3 series on the planet.</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="specs-pane active" data-car="aurelio">
+          <div class="specs-grid">
+            <div class="spec-tile"><div class="lbl">Engine</div><div class="val">6.5 <em>L V12</em></div></div>
+            <div class="spec-tile"><div class="lbl">Power</div><div class="val">830 <em>cv</em></div></div>
+            <div class="spec-tile"><div class="lbl">0–100 km/h</div><div class="val">2.4 <em>s</em></div></div>
+            <div class="spec-tile"><div class="lbl">Top speed</div><div class="val">365 <em>km/h</em></div></div>
+            <div class="spec-tile"><div class="lbl">Dry weight</div><div class="val">1,560 <em>kg</em></div></div>
+            <div class="spec-tile"><div class="lbl">Red line</div><div class="val">9,500 <em>rpm</em></div></div>
+          </div>
+        </div>
+        <div class="specs-pane" data-car="tempesta">
+          <div class="specs-grid">
+            <div class="spec-tile"><div class="lbl">Engine</div><div class="val">4.0 <em>L V8 + hybrid</em></div></div>
+            <div class="spec-tile"><div class="lbl">Power</div><div class="val">666 <em>cv</em></div></div>
+            <div class="spec-tile"><div class="lbl">0–100 km/h</div><div class="val">3.3 <em>s</em></div></div>
+            <div class="spec-tile"><div class="lbl">Top speed</div><div class="val">310 <em>km/h</em></div></div>
+            <div class="spec-tile"><div class="lbl">Seats</div><div class="val">4</div></div>
+            <div class="spec-tile"><div class="lbl">EV range</div><div class="val">60 <em>km</em></div></div>
+          </div>
+        </div>
+        <div class="specs-pane" data-car="corsa">
+          <div class="specs-grid">
+            <div class="spec-tile"><div class="lbl">Engine</div><div class="val">5.2 <em>L V10</em></div></div>
+            <div class="spec-tile"><div class="lbl">Power</div><div class="val">550 <em>cv</em></div></div>
+            <div class="spec-tile"><div class="lbl">Gearbox</div><div class="val">6-speed <em>sequential</em></div></div>
+            <div class="spec-tile"><div class="lbl">Dry weight</div><div class="val">1,250 <em>kg</em></div></div>
+            <div class="spec-tile"><div class="lbl">Homologation</div><div class="val">FIA <em>GT3</em></div></div>
+            <div class="spec-tile"><div class="lbl">Championships</div><div class="val">3 <em>in 2025</em></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="wordmark">Volare</div>
+        <p>Automobili Volare S.p.A. — Sant'Agata Bolognese, Italia. Designed, engineered and built in Italy since 1963.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 114 0v4M12 10v7"/></svg></a>
+        </div>
+      </div>
+      <div><h5>Models</h5><ul><li><a href="models.html">Aurelio V12</a></li><li><a href="models.html">Tempesta</a></li><li><a href="models.html">Corsa GT3</a></li><li><a href="#">Heritage</a></li></ul></div>
+      <div><h5>Experience</h5><ul><li><a href="#">Configure</a></li><li><a href="#">Find a dealer</a></li><li><a href="#">Virtual tour</a></li><li><a href="#">Events</a></li></ul></div>
+      <div><h5>Racing</h5><ul><li><a href="motorsport.html">Squadra Corse</a></li><li><a href="#">Super Trofeo</a></li><li><a href="motorsport.html">Calendar</a></li><li><a href="#">Drivers</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="#">About Volare</a></li><li><a href="#">Careers</a></li><li><a href="#">Investors</a></li><li><a href="contact.html">Press &amp; media</a></li></ul></div>
+    </div>
+    <div class="footer-foot">
+      <div>© 2026 Automobili Volare S.p.A. — P.IVA 00592530375</div>
+      <div>Privacy · Cookies · Legal · Suppliers</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Model tab switching (also swaps specs below)
+  (function() {
+    const buttons = document.querySelectorAll('.model-list button[data-model]');
+    const panes = document.querySelectorAll('.car-pane[data-car]');
+    const specPanes = document.querySelectorAll('.specs-pane[data-car]');
+    const tabBtns = document.querySelectorAll('.variant-tabs-row button');
+
+    buttons.forEach(btn => btn.addEventListener('click', () => {
+      const key = btn.dataset.model;
+      buttons.forEach(b => b.classList.toggle('active', b === btn));
+      panes.forEach(p => p.classList.toggle('active', p.dataset.car === key));
+      specPanes.forEach(p => p.classList.toggle('active', p.dataset.car === key));
+    }));
+
+    // Variant tabs (visual only, per car pane)
+    document.querySelectorAll('.variant-tabs-row').forEach(row => {
+      const tabs = row.querySelectorAll('button');
+      tabs.forEach(t => t.addEventListener('click', () => {
+        tabs.forEach(x => x.classList.toggle('active', x === t));
+      }));
+    });
+  })();
+</script>
+
+<script src="menu.js"></script>
+
+</body>
+</html>

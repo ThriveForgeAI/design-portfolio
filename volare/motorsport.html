@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Squadra Corse — Automobili Volare</title>
+<meta name="description" content="Volare's motorsport division — GT3, Super Trofeo, and the road-racing programme." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css" />
+<style>
+  /* Hero specifics */
+  .scene--corse .scene-bg {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 100%),
+      url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=2600&q=85");
+  }
+  .scene--paddock .scene-bg {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0) 40%, rgba(0,0,0,0.92) 100%),
+      url("https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=2600&q=85");
+  }
+
+  /* Season stats */
+  .corse-stats {
+    background: var(--iron);
+    padding: 96px 48px;
+    border-top: 1px solid var(--charcoal);
+    border-bottom: 1px solid var(--charcoal);
+  }
+  .corse-stats-inner { max-width: 1440px; margin: 0 auto; }
+  .corse-stats-head { margin-bottom: 48px; padding-bottom: 24px; border-bottom: 1px solid var(--charcoal); max-width: 760px; }
+  .corse-stats-head h2 {
+    font-family: var(--font); font-weight: 400;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.0; letter-spacing: -0.2px;
+    text-transform: uppercase;
+    margin: 12px 0 0;
+  }
+  .corse-stats-head h2 em { font-style: normal; color: var(--gold); }
+  .corse-stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .corse-stat { padding-right: 24px; border-right: 1px solid var(--charcoal); }
+  .corse-stat:last-child { border-right: 0; }
+  .corse-stat .n {
+    font-family: var(--font); font-weight: 400;
+    font-size: clamp(40px, 4.5vw, 72px);
+    line-height: 1; letter-spacing: -0.4px;
+    text-transform: uppercase; color: var(--white);
+    margin-bottom: 12px;
+  }
+  .corse-stat .n em { color: var(--gold); font-style: normal; font-weight: 400; }
+  .corse-stat .l {
+    font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--ash);
+    line-height: 1.4;
+  }
+
+  /* Calendar */
+  .calendar { background: var(--black); padding: 96px 48px; }
+  .calendar-inner { max-width: 1440px; margin: 0 auto; }
+  .calendar-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding-bottom: 24px; border-bottom: 1px solid var(--charcoal);
+    margin-bottom: 40px; gap: 24px;
+  }
+  .calendar-head h2 {
+    font-family: var(--font); font-weight: 400;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.0; letter-spacing: -0.2px;
+    text-transform: uppercase;
+    margin: 12px 0 0;
+  }
+  .filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-pills button {
+    background: transparent; border: 1px solid var(--charcoal);
+    color: var(--ash);
+    padding: 10px 18px;
+    font-family: inherit; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; border-radius: 0;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .filter-pills button.active {
+    background: var(--gold); color: var(--black); border-color: var(--gold);
+  }
+  .filter-pills button:hover:not(.active) { color: var(--white); border-color: var(--white); }
+
+  .race-list { display: flex; flex-direction: column; }
+  .race {
+    display: grid;
+    grid-template-columns: 90px 1fr 2fr 1fr auto;
+    gap: 32px; align-items: center;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--charcoal);
+    transition: background .2s ease, padding .2s ease;
+  }
+  .race:hover { background: var(--iron); padding-left: 12px; padding-right: 12px; }
+  .race .date {
+    font-family: var(--font); font-weight: 400;
+    font-size: 28px; line-height: 1; letter-spacing: -0.2px;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .race .date em {
+    font-size: 11px; letter-spacing: 2px;
+    color: var(--ash); font-weight: 400;
+    font-style: normal; display: block; margin-top: 6px;
+  }
+  .race .series {
+    font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .race h3 {
+    font-family: var(--font); font-weight: 400;
+    font-size: 20px; letter-spacing: 0.3px;
+    text-transform: uppercase; margin: 0;
+    line-height: 1.1;
+  }
+  .race .circuit {
+    font-size: 13px; letter-spacing: 0.3px;
+    color: var(--ash); margin-top: 4px;
+  }
+  .race .status {
+    font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    background: var(--steel); color: var(--black);
+    justify-self: start;
+  }
+  .race .status.upcoming { background: var(--gold); }
+  .race .status.past { background: var(--charcoal); color: var(--steel); }
+  .race .cta {
+    font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    border-bottom: 1px solid var(--white);
+    padding-bottom: 4px;
+  }
+  .race .cta:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* Drivers */
+  .drivers { background: var(--black); padding: 0 48px 96px; }
+  .drivers-inner { max-width: 1440px; margin: 0 auto; }
+  .drivers-head {
+    padding-bottom: 24px; border-bottom: 1px solid var(--charcoal);
+    margin-bottom: 40px;
+  }
+  .drivers-head h2 {
+    font-family: var(--font); font-weight: 400;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.0; letter-spacing: -0.2px;
+    text-transform: uppercase;
+    margin: 12px 0 0;
+  }
+  .driver-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .driver {
+    position: relative;
+    aspect-ratio: 3/4;
+    background: var(--iron);
+    overflow: hidden;
+  }
+  .driver .img {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    filter: grayscale(0.3) brightness(0.85);
+    transition: transform .6s ease, filter .6s ease;
+  }
+  .driver:hover .img { transform: scale(1.04); filter: grayscale(0) brightness(1); }
+  .driver::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.9) 100%);
+  }
+  .driver-meta {
+    position: absolute; z-index: 2;
+    bottom: 20px; left: 20px; right: 20px;
+    color: var(--white);
+  }
+  .driver-meta .num {
+    font-family: var(--font); font-weight: 400;
+    font-size: 44px; line-height: 1; letter-spacing: -0.5px;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .driver-meta .name {
+    font-size: 15px; letter-spacing: 1.5px;
+    text-transform: uppercase; font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .driver-meta .country {
+    font-size: 10px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--ash);
+  }
+  .driver--1 .img { background-image: url("https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=85"); }
+  .driver--2 .img { background-image: url("https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=1200&q=85"); }
+  .driver--3 .img { background-image: url("https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1200&q=85"); }
+  .driver--4 .img { background-image: url("https://images.unsplash.com/photo-1617469767053-d3b523a0b982?auto=format&fit=crop&w=1200&q=85"); }
+
+  @media (max-width: 1024px) {
+    .corse-stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .corse-stat { border-right: 0; border-bottom: 1px solid var(--charcoal); padding: 20px 0; }
+    .race { grid-template-columns: 72px 1fr 1fr; gap: 20px; }
+    .race .status, .race .cta { grid-column: span 3; justify-self: start; padding-top: 4px; }
+    .driver-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .corse-stats, .calendar, .drivers { padding-left: 20px; padding-right: 20px; }
+    .corse-stats, .calendar { padding-top: 64px; padding-bottom: 64px; }
+    .corse-stats-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .calendar-head { flex-direction: column; align-items: flex-start; }
+    .race { grid-template-columns: 72px 1fr; }
+    .race .circuit, .race .status, .race .cta { grid-column: span 2; }
+    .driver-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-left">
+    <button class="menu-btn" aria-label="Open menu" data-menu-open>
+      <span class="bars" aria-hidden="true"><span></span></span>
+      <span class="menu-label">Menu</span>
+    </button>
+  </div>
+  <a href="index.html" class="brand-bull" aria-label="Volare home">
+    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+      <path d="M32 4l24 8v18c0 14-10 24-24 30C18 54 8 44 8 30V12l24-8z"/>
+      <path d="M20 26c3-4 7-6 12-6s9 2 12 6M24 32c2 3 5 4 8 4s6-1 8-4M28 40c1 2 2 3 4 3s3-1 4-3" />
+    </svg>
+    <span class="brand-wordmark">Volare</span>
+  </a>
+  <div class="nav-right">
+    <button aria-label="Search"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+    <button aria-label="Bookmarks"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button>
+    <span class="label" style="font-size:12px;opacity:0.8;">EN</span>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- Hero -->
+  <section class="scene scene--corse">
+    <div class="scene-bg" aria-hidden="true"></div>
+    <div class="scene-inner">
+      <p class="eyebrow">Motorsport division · Since 1979</p>
+      <h1 class="display">Squadra <em>Corse.</em></h1>
+      <p class="display-sub">Three championships. One obsession.</p>
+      <p class="lede">Volare's factory racing programme — GT3 homologated cars, the Super Trofeo one-make series, and every engineer who ever built a road car we're proud of started here.</p>
+      <div class="btn-row">
+        <a href="#calendar" class="btn-gold">2026 calendar</a>
+        <a href="contact.html" class="btn-ghost">Customer programme</a>
+      </div>
+    </div>
+    <button class="hex" aria-label="Pause video"><svg viewBox="0 0 64 64"><polygon points="32,4 58,18 58,46 32,60 6,46 6,18" /></svg><span class="play"><i></i><i></i></span></button>
+    <div class="data-rail">
+      <div>Series<span>GT3 · Super Trofeo</span></div>
+      <div>Entries in 2025<span>62</span></div>
+      <div>Championships<span>3 in 2025</span></div>
+      <div>Podiums<span>48</span></div>
+    </div>
+    <div class="progress" aria-hidden="true"></div>
+  </section>
+
+  <!-- Season stats -->
+  <section class="corse-stats">
+    <div class="corse-stats-inner">
+      <div class="corse-stats-head">
+        <p class="eyebrow">2025 season</p>
+        <h2>A season that <em>rewrote the record.</em></h2>
+      </div>
+      <div class="corse-stats-grid">
+        <div class="corse-stat"><div class="n"><em>3</em></div><div class="l">Championships won across GT3 &amp; Super Trofeo</div></div>
+        <div class="corse-stat"><div class="n">62</div><div class="l">Car entries from private customer teams</div></div>
+        <div class="corse-stat"><div class="n">48</div><div class="l">Podium finishes across all series</div></div>
+        <div class="corse-stat"><div class="n">14 <em>w</em></div><div class="l">Outright race wins, including Spa 24h</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Calendar -->
+  <section class="calendar" id="calendar">
+    <div class="calendar-inner">
+      <div class="calendar-head">
+        <div>
+          <p class="eyebrow">Race calendar</p>
+          <h2>2026 · Where Squadra Corse races next.</h2>
+        </div>
+        <div class="filter-pills">
+          <button class="active">All series</button>
+          <button>GT3</button>
+          <button>Super Trofeo</button>
+          <button>Endurance</button>
+        </div>
+      </div>
+
+      <div class="race-list">
+        <article class="race">
+          <div class="date">05<em>Mar</em></div>
+          <div class="series">GT3</div>
+          <div><h3>Bathurst 12 Hour</h3><div class="circuit">Mount Panorama · Australia</div></div>
+          <span class="status past">Completed</span>
+          <a href="#" class="cta">Report →</a>
+        </article>
+        <article class="race">
+          <div class="date">27<em>Apr</em></div>
+          <div class="series">Super Trofeo</div>
+          <div><h3>Imola Round 1</h3><div class="circuit">Autodromo Enzo e Dino Ferrari · Italia</div></div>
+          <span class="status upcoming">Upcoming</span>
+          <a href="#" class="cta">Tickets →</a>
+        </article>
+        <article class="race">
+          <div class="date">18<em>May</em></div>
+          <div class="series">Endurance</div>
+          <div><h3>Spa 24 Hours</h3><div class="circuit">Spa-Francorchamps · Belgium</div></div>
+          <span class="status upcoming">Upcoming</span>
+          <a href="#" class="cta">Tickets →</a>
+        </article>
+        <article class="race">
+          <div class="date">12<em>Jul</em></div>
+          <div class="series">GT3</div>
+          <div><h3>Nürburgring 6 Hours</h3><div class="circuit">Nürburgring GP · Deutschland</div></div>
+          <span class="status upcoming">Upcoming</span>
+          <a href="#" class="cta">Tickets →</a>
+        </article>
+        <article class="race">
+          <div class="date">09<em>Aug</em></div>
+          <div class="series">Super Trofeo</div>
+          <div><h3>Silverstone Round 3</h3><div class="circuit">Silverstone Circuit · United Kingdom</div></div>
+          <span class="status upcoming">Upcoming</span>
+          <a href="#" class="cta">Tickets →</a>
+        </article>
+        <article class="race">
+          <div class="date">15<em>Nov</em></div>
+          <div class="series">Endurance</div>
+          <div><h3>World Finals</h3><div class="circuit">Jerez · España</div></div>
+          <span class="status upcoming">Upcoming</span>
+          <a href="#" class="cta">Tickets →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Paddock cinematic -->
+  <section class="scene scene--paddock">
+    <div class="scene-bg" aria-hidden="true"></div>
+    <div class="scene-inner">
+      <p class="eyebrow">Customer programme</p>
+      <h2 class="display">From paddock <em>to podium.</em></h2>
+      <p class="lede">The Volare Customer Racing programme supplies private teams and drivers with a fully-supported Corsa GT3 or Super Trofeo, from logistics to race-day engineering.</p>
+      <div class="btn-row">
+        <a href="contact.html" class="btn-gold">Enter the programme</a>
+        <a href="models.html" class="btn-ghost">Explore Corsa GT3</a>
+      </div>
+    </div>
+    <div class="progress" aria-hidden="true"></div>
+  </section>
+
+  <!-- Drivers -->
+  <section class="drivers">
+    <div class="drivers-inner">
+      <div class="drivers-head">
+        <p class="eyebrow">Works drivers</p>
+        <h2>Who we send to the grid.</h2>
+      </div>
+      <div class="driver-grid">
+        <article class="driver driver--1">
+          <div class="img" aria-hidden="true"></div>
+          <div class="driver-meta">
+            <div class="num">63</div>
+            <div class="name">Marco Bellini</div>
+            <div class="country">Italia · GT3 lead</div>
+          </div>
+        </article>
+        <article class="driver driver--2">
+          <div class="img" aria-hidden="true"></div>
+          <div class="driver-meta">
+            <div class="num">11</div>
+            <div class="name">Lena Karlsson</div>
+            <div class="country">Sverige · Endurance</div>
+          </div>
+        </article>
+        <article class="driver driver--3">
+          <div class="img" aria-hidden="true"></div>
+          <div class="driver-meta">
+            <div class="num">27</div>
+            <div class="name">Hiroki Tanaka</div>
+            <div class="country">日本 · Super Trofeo</div>
+          </div>
+        </article>
+        <article class="driver driver--4">
+          <div class="img" aria-hidden="true"></div>
+          <div class="driver-meta">
+            <div class="num">44</div>
+            <div class="name">Diego Santos</div>
+            <div class="country">Brasil · Squadra Junior</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="wordmark">Volare</div>
+        <p>Automobili Volare S.p.A. — Sant'Agata Bolognese, Italia. Designed, engineered and built in Italy since 1963.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 114 0v4M12 10v7"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h5>Models</h5>
+        <ul>
+          <li><a href="models.html">Aurelio V12</a></li>
+          <li><a href="models.html">Tempesta</a></li>
+          <li><a href="models.html">Corsa GT3</a></li>
+          <li><a href="#">Heritage</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Experience</h5>
+        <ul>
+          <li><a href="#">Configure</a></li>
+          <li><a href="#">Find a dealer</a></li>
+          <li><a href="#">Virtual tour</a></li>
+          <li><a href="#">Events</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Racing</h5>
+        <ul>
+          <li><a href="motorsport.html">Squadra Corse</a></li>
+          <li><a href="#">Super Trofeo</a></li>
+          <li><a href="motorsport.html">Calendar</a></li>
+          <li><a href="#">Drivers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About Volare</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Investors</a></li>
+          <li><a href="contact.html">Press &amp; media</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-foot">
+      <div>© 2026 Automobili Volare S.p.A. — P.IVA 00592530375</div>
+      <div>Privacy · Cookies · Legal · Suppliers</div>
+    </div>
+  </div>
+</footer>
+
+<script src="menu.js"></script>
+
+</body>
+</html>

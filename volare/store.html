@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Store — Automobili Volare</title>
+<meta name="description" content="Volare Store — apparel, accessories, scale models and lifestyle." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css" />
+<style>
+  /* Hero */
+  .store-hero {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background-color: #050505;
+    display: flex; align-items: flex-end;
+  }
+  .store-hero .bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    animation: kenburns 20s ease-in-out infinite alternate;
+    opacity: 0; transition: opacity .8s ease;
+  }
+  .store-hero .bg.active { opacity: 1; }
+  .store-hero .bg--1 {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.85) 100%),
+      url("https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=2600&q=85");
+  }
+  .store-hero .bg--2 {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.85) 100%),
+      url("https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=2600&q=85");
+  }
+  .store-hero .bg--3 {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.85) 100%),
+      url("https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=2600&q=85");
+  }
+  .store-hero-inner {
+    position: relative; z-index: 2;
+    padding: 88px 48px 100px;
+    width: 100%; max-width: 1440px; margin: 0 auto;
+    display: flex; flex-direction: column; min-height: 100vh;
+    justify-content: space-between;
+  }
+  .store-hero .breadcrumb { margin-top: 24px; }
+  .store-hero .hero-body {
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .store-hero .wordmark-small {
+    font-size: 13px; letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white); opacity: 0.85;
+    margin: 0;
+  }
+  .store-hero h1 {
+    font-family: var(--font); font-weight: 400;
+    font-size: clamp(72px, 14vw, 200px);
+    line-height: 0.85; letter-spacing: -1.2px;
+    text-transform: uppercase;
+    margin: 0;
+    color: var(--white);
+  }
+  .store-hero .btn-white { margin-top: 36px; align-self: flex-start; min-width: 260px; }
+
+  /* Products section */
+  .products {
+    background: var(--black);
+    padding: 112px 48px 80px;
+  }
+  .products-inner { max-width: 1440px; margin: 0 auto; }
+  .products-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    border-bottom: 1px solid var(--charcoal);
+    padding-bottom: 24px; margin-bottom: 48px;
+    gap: 24px;
+  }
+  .products-head h2 {
+    font-family: var(--font); font-weight: 400;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.0; letter-spacing: -0.2px;
+    text-transform: uppercase;
+    margin: 12px 0 0;
+  }
+  .cat-pills {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .cat-pills button {
+    background: transparent; border: 1px solid var(--charcoal);
+    color: var(--ash);
+    padding: 10px 18px;
+    font-family: inherit; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; border-radius: 0;
+    transition: color .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .cat-pills button.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
+  .cat-pills button:hover:not(.active) { color: var(--white); border-color: var(--white); }
+
+  .product-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .product {
+    position: relative;
+    background: var(--iron);
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .product-image {
+    aspect-ratio: 1 / 1;
+    background-size: cover; background-position: center;
+    transition: transform .5s ease;
+    filter: saturate(1.02);
+  }
+  .product:hover .product-image { transform: scale(1.04); }
+  .product-body {
+    padding: 18px 20px 22px;
+    border-top: 1px solid var(--charcoal);
+  }
+  .product-cat {
+    font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .product-name {
+    font-family: var(--font); font-weight: 400;
+    font-size: 16px; letter-spacing: 0.3px;
+    line-height: 1.25;
+    margin: 0 0 10px;
+    text-transform: uppercase;
+  }
+  .product-price {
+    font-size: 14px; color: var(--smoke); opacity: 0.85;
+  }
+  .product-badge {
+    position: absolute; top: 12px; left: 12px; z-index: 2;
+    background: var(--gold); color: var(--black);
+    padding: 4px 10px;
+    font-size: 10px; letter-spacing: 1.5px;
+    text-transform: uppercase; font-weight: 500;
+  }
+  .product-badge.black { background: var(--black); color: var(--white); }
+
+  /* Product images */
+  .p-1 .product-image { background-image: url("https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=1200&q=85"); }
+  .p-2 .product-image { background-image: url("https://images.unsplash.com/photo-1491637639811-60e2756cc1c7?auto=format&fit=crop&w=1200&q=85"); }
+  .p-3 .product-image { background-image: url("https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=85"); }
+  .p-4 .product-image { background-image: url("https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1200&q=85"); }
+  .p-5 .product-image { background-image: url("https://images.unsplash.com/photo-1594498653385-d5172c532c00?auto=format&fit=crop&w=1200&q=85"); }
+  .p-6 .product-image { background-image: url("https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=85"); }
+  .p-7 .product-image { background-image: url("https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=85"); }
+  .p-8 .product-image { background-image: url("https://images.unsplash.com/photo-1527856263669-12c3a0af2aa6?auto=format&fit=crop&w=1200&q=85"); }
+
+  /* Collection strip */
+  .collection {
+    background: var(--iron);
+    padding: 96px 48px;
+    border-top: 1px solid var(--charcoal);
+    border-bottom: 1px solid var(--charcoal);
+  }
+  .collection-wrap {
+    max-width: 1440px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+    align-items: center;
+  }
+  .collection-image {
+    aspect-ratio: 4 / 5;
+    background: url("https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?auto=format&fit=crop&w=1600&q=85") center/cover;
+  }
+  .collection-body h2 {
+    font-family: var(--font); font-weight: 400;
+    font-size: clamp(36px, 5vw, 72px);
+    line-height: 0.95; letter-spacing: -0.3px;
+    text-transform: uppercase;
+    margin: 12px 0 22px;
+  }
+  .collection-body h2 em { font-style: normal; color: var(--gold); }
+  .collection-body p {
+    font-size: 17px; line-height: 1.7;
+    color: var(--smoke); opacity: 0.9;
+    margin: 0 0 28px;
+    max-width: 480px;
+  }
+
+  @media (max-width: 1024px) {
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .collection-wrap { grid-template-columns: 1fr; gap: 32px; }
+    .collection-image { aspect-ratio: 16 / 10; }
+  }
+  @media (max-width: 720px) {
+    .store-hero-inner { padding: 72px 20px 84px; }
+    .products { padding: 64px 20px; }
+    .products-head { flex-direction: column; align-items: flex-start; }
+    .product-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+    .collection { padding: 56px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-left">
+    <button class="menu-btn" aria-label="Open menu" data-menu-open>
+      <span class="bars" aria-hidden="true"><span></span></span>
+      <span class="menu-label">Menu</span>
+    </button>
+  </div>
+  <a href="index.html" class="brand-bull" aria-label="Volare home">
+    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+      <path d="M32 4l24 8v18c0 14-10 24-24 30C18 54 8 44 8 30V12l24-8z"/>
+      <path d="M20 26c3-4 7-6 12-6s9 2 12 6M24 32c2 3 5 4 8 4s6-1 8-4M28 40c1 2 2 3 4 3s3-1 4-3" />
+    </svg>
+    <span class="brand-wordmark">Volare</span>
+  </a>
+  <div class="nav-right">
+    <button aria-label="Search"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+    <button aria-label="Bookmarks"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button>
+    <span class="label" style="font-size:12px;opacity:0.8;">EN</span>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- Hero carousel -->
+  <section class="store-hero">
+    <div class="bg bg--1 active" aria-hidden="true"></div>
+    <div class="bg bg--2" aria-hidden="true"></div>
+    <div class="bg bg--3" aria-hidden="true"></div>
+    <div class="store-hero-inner">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="sep">|</span>
+        <span class="current">Store</span>
+      </nav>
+      <div class="hero-body">
+        <p class="wordmark-small">Volare</p>
+        <h1>Store</h1>
+        <a href="#products" class="btn-white">Go to the store <span class="arrow-right"></span></a>
+      </div>
+    </div>
+    <div class="slide-indicators" role="tablist" aria-label="Hero carousel">
+      <button class="dash active" aria-label="Slide 1" data-slide="0"></button>
+      <button class="dash" aria-label="Slide 2" data-slide="1"></button>
+      <button class="dash" aria-label="Slide 3" data-slide="2"></button>
+    </div>
+    <button class="hex" aria-label="Pause carousel" id="heroPause">
+      <svg viewBox="0 0 64 64"><polygon points="32,4 58,18 58,46 32,60 6,46 6,18" /></svg>
+      <span class="play"><i></i><i></i></span>
+    </button>
+    <div class="progress" aria-hidden="true"></div>
+  </section>
+
+  <!-- Products -->
+  <section class="products" id="products">
+    <div class="products-inner">
+      <div class="products-head">
+        <div>
+          <p class="eyebrow">New season</p>
+          <h2>Shop the collection.</h2>
+        </div>
+        <div class="cat-pills" role="tablist">
+          <button class="active">All</button>
+          <button>Apparel</button>
+          <button>Accessories</button>
+          <button>Scale models</button>
+          <button>Lifestyle</button>
+        </div>
+      </div>
+
+      <div class="product-grid">
+        <article class="product p-1">
+          <span class="product-badge">New</span>
+          <div class="product-image" role="img" aria-label="Volare racing jacket"></div>
+          <div class="product-body">
+            <div class="product-cat">Apparel</div>
+            <h3 class="product-name">Corsa Racing Jacket — Black</h3>
+            <div class="product-price">€ 850</div>
+          </div>
+        </article>
+        <article class="product p-2">
+          <div class="product-image" role="img" aria-label="Volare leather cap"></div>
+          <div class="product-body">
+            <div class="product-cat">Apparel</div>
+            <h3 class="product-name">Official Pit Crew Cap</h3>
+            <div class="product-price">€ 95</div>
+          </div>
+        </article>
+        <article class="product p-3">
+          <span class="product-badge black">Limited</span>
+          <div class="product-image" role="img" aria-label="Volare watch"></div>
+          <div class="product-body">
+            <div class="product-cat">Accessories</div>
+            <h3 class="product-name">Aurelio Chronograph — Titanium</h3>
+            <div class="product-price">€ 4,850</div>
+          </div>
+        </article>
+        <article class="product p-4">
+          <div class="product-image" role="img" aria-label="Volare leather driving gloves"></div>
+          <div class="product-body">
+            <div class="product-cat">Accessories</div>
+            <h3 class="product-name">Signature Driving Gloves</h3>
+            <div class="product-price">€ 420</div>
+          </div>
+        </article>
+        <article class="product p-5">
+          <span class="product-badge">New</span>
+          <div class="product-image" role="img" aria-label="Aurelio scale model 1:18"></div>
+          <div class="product-body">
+            <div class="product-cat">Scale models</div>
+            <h3 class="product-name">Aurelio V12 — 1:18 Die-Cast</h3>
+            <div class="product-price">€ 320</div>
+          </div>
+        </article>
+        <article class="product p-6">
+          <div class="product-image" role="img" aria-label="Volare key fob"></div>
+          <div class="product-body">
+            <div class="product-cat">Accessories</div>
+            <h3 class="product-name">Crafted Leather Key Case</h3>
+            <div class="product-price">€ 180</div>
+          </div>
+        </article>
+        <article class="product p-7">
+          <div class="product-image" role="img" aria-label="Volare weekender bag"></div>
+          <div class="product-body">
+            <div class="product-cat">Lifestyle</div>
+            <h3 class="product-name">Sant'Agata Weekender Bag</h3>
+            <div class="product-price">€ 1,240</div>
+          </div>
+        </article>
+        <article class="product p-8">
+          <span class="product-badge black">Collector</span>
+          <div class="product-image" role="img" aria-label="Volare book"></div>
+          <div class="product-body">
+            <div class="product-cat">Books &amp; prints</div>
+            <h3 class="product-name">Volare · Sixty Years — Vol. 1</h3>
+            <div class="product-price">€ 380</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Collection strip -->
+  <section class="collection">
+    <div class="collection-wrap">
+      <div class="collection-image" role="img" aria-label="Volare apparel"></div>
+      <div class="collection-body">
+        <p class="eyebrow">Corsa 2026 capsule</p>
+        <h2>A capsule for <em>driving things fast.</em></h2>
+        <p>Developed alongside Squadra Corse, the Corsa 2026 capsule brings track-level material science to everyday pieces — flame-resistant cotton, four-way-stretch technical fabrics, and the same embroidery our mechanics wear in the pit lane.</p>
+        <a href="#products" class="btn-gold">Shop the capsule
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="wordmark">Volare</div>
+        <p>Automobili Volare S.p.A. — Sant'Agata Bolognese, Italia. Designed, engineered and built in Italy since 1963.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 114 0v4M12 10v7"/></svg></a>
+        </div>
+      </div>
+      <div><h5>Models</h5><ul><li><a href="models.html">Aurelio V12</a></li><li><a href="models.html">Tempesta</a></li><li><a href="models.html">Corsa GT3</a></li><li><a href="#">Heritage</a></li></ul></div>
+      <div><h5>Experience</h5><ul><li><a href="#">Configure</a></li><li><a href="#">Find a dealer</a></li><li><a href="#">Virtual tour</a></li><li><a href="#">Events</a></li></ul></div>
+      <div><h5>Racing</h5><ul><li><a href="motorsport.html">Squadra Corse</a></li><li><a href="#">Super Trofeo</a></li><li><a href="motorsport.html">Calendar</a></li><li><a href="#">Drivers</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="#">About Volare</a></li><li><a href="#">Careers</a></li><li><a href="#">Investors</a></li><li><a href="contact.html">Press &amp; media</a></li></ul></div>
+    </div>
+    <div class="footer-foot">
+      <div>© 2026 Automobili Volare S.p.A. — P.IVA 00592530375</div>
+      <div>Privacy · Cookies · Legal · Suppliers</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Hero carousel
+  (function() {
+    const slides = document.querySelectorAll('.store-hero .bg');
+    const dots = document.querySelectorAll('.slide-indicators .dash');
+    const pauseBtn = document.getElementById('heroPause');
+    let i = 0, timer, paused = false;
+    function show(n) {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+    }
+    function start() { if (!timer) timer = setInterval(() => show(i + 1), 5500); }
+    function stop() { clearInterval(timer); timer = null; }
+    dots.forEach((d, idx) => d.addEventListener('click', () => { show(idx); stop(); if (!paused) start(); }));
+    pauseBtn && pauseBtn.addEventListener('click', () => {
+      paused = !paused;
+      if (paused) stop(); else start();
+      pauseBtn.style.opacity = paused ? '0.5' : '1';
+    });
+    start();
+  })();
+
+  // Category pills (visual)
+  (function() {
+    const pills = document.querySelectorAll('.cat-pills button');
+    pills.forEach(p => p.addEventListener('click', () => {
+      pills.forEach(x => x.classList.toggle('active', x === p));
+    }));
+  })();
+</script>
+
+<script src="menu.js"></script>
+
+</body>
+</html>
