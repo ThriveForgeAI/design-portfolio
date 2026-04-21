@@ -1,0 +1,116 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'heartwood/**'
+      - 'tessera/**'
+      - 'orbital/**'
+      - 'volare/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+    inputs:
+      sites:
+        description: 'Which sites to deploy (comma-separated, or "all")'
+        required: false
+        default: 'all'
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  detect-changes:
+    name: Detect changed sites
+    runs-on: ubuntu-latest
+    outputs:
+      heartwood: ${{ steps.filter.outputs.heartwood }}
+      tessera: ${{ steps.filter.outputs.tessera }}
+      orbital: ${{ steps.filter.outputs.orbital }}
+      volare: ${{ steps.filter.outputs.volare }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Filter changed paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            heartwood:
+              - 'heartwood/**'
+            tessera:
+              - 'tessera/**'
+            orbital:
+              - 'orbital/**'
+            volare:
+              - 'volare/**'
+
+      # Manual dispatch with "all" or a comma-list forces every matching site on.
+      - name: Override from workflow_dispatch
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          sites="${{ github.event.inputs.sites }}"
+          echo "Manual dispatch requested: $sites"
+          {
+            if [[ "$sites" == "all" || "$sites" == *"heartwood"* ]]; then echo "heartwood=true"; fi
+            if [[ "$sites" == "all" || "$sites" == *"tessera"* ]]; then echo "tessera=true"; fi
+            if [[ "$sites" == "all" || "$sites" == *"orbital"* ]]; then echo "orbital=true"; fi
+            if [[ "$sites" == "all" || "$sites" == *"volare"* ]]; then echo "volare=true"; fi
+          } >> "$GITHUB_OUTPUT"
+
+  deploy-heartwood:
+    name: Deploy Heartwood
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.heartwood == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy heartwood --project-name=heartwood-demo --branch=main --commit-dirty=true
+
+  deploy-tessera:
+    name: Deploy Tessera
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.tessera == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy tessera --project-name=tessera-demo --branch=main --commit-dirty=true
+
+  deploy-orbital:
+    name: Deploy Orbital
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.orbital == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy orbital --project-name=orbital-demo --branch=main --commit-dirty=true
+
+  deploy-volare:
+    name: Deploy Volare
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.volare == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy volare --project-name=volare-demo --branch=main --commit-dirty=true

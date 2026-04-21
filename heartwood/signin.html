@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sign in — Heartwood</title>
+<meta name="description" content="Sign in to Heartwood." />
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,480;12..96,500;12..96,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css" />
+<style>
+  .auth-shell {
+    min-height: calc(100vh - 220px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 56px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .auth-wash {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(60% 40% at 20% 30%, rgba(255,183,201,0.3), transparent 60%),
+      radial-gradient(45% 35% at 85% 80%, rgba(180,200,255,0.28), transparent 60%);
+    filter: blur(40px); pointer-events: none; z-index: 0;
+  }
+  body.dark .auth-wash { opacity: 0.25; }
+
+  .auth-card {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 420px;
+    background: var(--cream-surface);
+    border: 1px solid var(--cream-light);
+    border-radius: 16px;
+    padding: 40px 36px 32px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
+  }
+  body.dark .auth-card { box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset; }
+
+  .auth-head { text-align: center; margin-bottom: 28px; }
+  .auth-head .brand-mark {
+    margin: 0 auto 16px;
+    width: 36px; height: 36px;
+  }
+  .auth-head h1 {
+    font-size: 26px; font-weight: 600;
+    letter-spacing: -0.5px;
+    margin: 0 0 6px;
+  }
+  .auth-head p {
+    font-size: 14px; color: var(--muted);
+    margin: 0;
+  }
+
+  .social { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .auth-btn {
+    width: 100%;
+    display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-family: inherit; font-size: 15px; font-weight: 400;
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease, color .15s ease, box-shadow .2s ease;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+  .auth-btn:hover { text-decoration: none; }
+  .auth-btn svg { width: 18px; height: 18px; }
+
+  .btn-social-outline {
+    background: var(--cream);
+    color: var(--charcoal);
+    border-color: var(--cream-light);
+  }
+  .btn-social-outline:hover { background: var(--cream-elev); border-color: var(--charcoal-40); }
+
+  .btn-social-dark {
+    background: var(--charcoal);
+    color: var(--offwhite);
+    border-color: var(--charcoal);
+    box-shadow: var(--inset-dark);
+  }
+  .btn-social-dark:hover { box-shadow: var(--inset-dark), 0 6px 20px rgba(0,0,0,0.12); }
+
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 20px 0;
+  }
+  .divider::before, .divider::after {
+    content: ""; flex: 1; height: 1px; background: var(--cream-light);
+  }
+  .divider span {
+    font-size: 12px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  .auth-form { display: flex; flex-direction: column; gap: 14px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 13px; color: var(--charcoal-82); font-weight: 500; }
+  .field input {
+    width: 100%;
+    padding: 11px 16px;
+    border: 1px solid var(--cream-light);
+    border-radius: 8px;
+    background: var(--cream);
+    color: var(--charcoal);
+    font-size: 15px;
+    transition: border-color .15s ease, box-shadow .2s ease;
+  }
+  .field input:focus {
+    outline: none;
+    border-color: var(--charcoal-40);
+    box-shadow: var(--focus-shadow);
+  }
+  .field input::placeholder { color: var(--muted); opacity: 0.7; }
+
+  .field-head { display: flex; align-items: center; justify-content: space-between; }
+  .field-head a { font-size: 12px; color: var(--muted); text-decoration: none; }
+  .field-head a:hover { color: var(--charcoal); text-decoration: underline; }
+
+  .auth-submit { margin-top: 8px; justify-content: center; width: 100%; }
+
+  .auth-foot {
+    text-align: center; margin-top: 22px;
+    font-size: 14px; color: var(--muted);
+  }
+  .auth-foot a { color: var(--charcoal); font-weight: 500; text-decoration: none; }
+  .auth-foot a:hover { text-decoration: underline; }
+
+  .auth-terms {
+    text-align: center; font-size: 12px;
+    color: var(--muted);
+    max-width: 320px; margin: 20px auto 0;
+    line-height: 1.5;
+    opacity: 0.9;
+  }
+  .auth-terms a { color: var(--charcoal-82); text-decoration: underline; text-decoration-color: var(--charcoal-40); }
+  .auth-terms a:hover { text-decoration-color: var(--charcoal); }
+
+  @media (max-width: 480px) {
+    .auth-card { padding: 32px 24px 28px; border-radius: 12px; }
+  }
+</style>
+</head>
+<body>
+<script>try { if (localStorage.getItem('heartwood-theme') === 'dark') document.body.classList.add('dark'); } catch (e) {}</script>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand"><span class="brand-mark"></span><span>Heartwood</span></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html#build">Build</a>
+      <a href="index.html#templates">Templates</a>
+      <a href="docs.html">Docs</a>
+      <a href="pricing.html">Pricing</a>
+    </nav>
+    <div class="nav-right">
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <a href="signin.html" class="login-link active" style="color:var(--charcoal);font-weight:500;opacity:1;">Log in</a>
+      <a href="signin.html" class="btn btn-dark">Start building</a>
+    </div>
+  </div>
+</header>
+
+<main class="auth-shell">
+  <div class="auth-wash" aria-hidden="true"></div>
+  <section class="auth-card" aria-labelledby="auth-title">
+    <div class="auth-head">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <h1 id="auth-title">Sign in to Heartwood</h1>
+      <p>Welcome back. Pick up where you left off.</p>
+    </div>
+
+    <div class="social">
+      <a href="#google" class="auth-btn btn-social-outline">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Continue with Google
+      </a>
+      <a href="#github" class="auth-btn btn-social-dark">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.51-1.47.11-3.07 0 0 .97-.31 3.18 1.18a11.04 11.04 0 012.89-.39c.98 0 1.97.13 2.89.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.6.24 2.78.12 3.07.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.41-5.25 5.69.41.35.78 1.05.78 2.12v3.14c0 .31.21.67.8.56A11.52 11.52 0 0023.5 12C23.5 5.65 18.35.5 12 .5z"/>
+        </svg>
+        Continue with GitHub
+      </a>
+    </div>
+
+    <div class="divider"><span>or</span></div>
+
+    <form class="auth-form" onsubmit="event.preventDefault();">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div class="field">
+        <div class="field-head">
+          <label for="password">Password</label>
+          <a href="#forgot">Forgot?</a>
+        </div>
+        <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+      <button type="submit" class="auth-btn btn-social-dark auth-submit">Sign in</button>
+    </form>
+
+    <p class="auth-foot">Don't have an account? <a href="#signup">Sign up</a></p>
+    <p class="auth-terms">By continuing you agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <a href="index.html" class="brand"><span class="brand-mark"></span><span>Heartwood</span></a>
+      <p style="color:var(--muted);margin:14px 0 0;max-width:320px;font-size:14px;">Software that feels like it was made by someone who cares.</p>
+    </div>
+    <div><h5>Product</h5><ul><li><a href="index.html#build">Studio</a></li><li><a href="index.html#templates">Templates</a></li><li><a href="#">Integrations</a></li><li><a href="#">Changelog</a></li></ul></div>
+    <div><h5>Company</h5><ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li><li><a href="#">Contact</a></li></ul></div>
+    <div><h5>Resources</h5><ul><li><a href="docs.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="signin.html">Sign in</a></li><li><a href="#">Status</a></li></ul></div>
+  </div>
+  <div class="footer-foot">
+    <div>© 2026 Heartwood Labs</div>
+    <div><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Cookies</a></div>
+  </div>
+</footer>
+
+<script src="theme.js" defer></script>
+</body>
+</html>

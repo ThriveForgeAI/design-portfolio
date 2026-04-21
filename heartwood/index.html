@@ -5,75 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Heartwood — Build beautiful software in conversation</title>
 <meta name="description" content="An AI full-stack builder with warmth. Sketch an idea, refine in plain language, ship a real app." />
+<meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,480;12..96,500;12..96,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css" />
 <style>
-  :root {
-    --cream: #f7f4ed;
-    --cream-surface: #f7f4ed;
-    --cream-light: #eceae4;
-    --charcoal: #1c1c1c;
-    --charcoal-82: rgba(28,28,28,0.82);
-    --charcoal-40: rgba(28,28,28,0.4);
-    --charcoal-04: rgba(28,28,28,0.04);
-    --charcoal-03: rgba(28,28,28,0.03);
-    --muted: #5f5f5d;
-    --offwhite: #fcfbf8;
-    --inset-dark:
-      rgba(255,255,255,0.2) 0 0.5px 0 0 inset,
-      rgba(0,0,0,0.2) 0 0 0 0.5px inset,
-      rgba(0,0,0,0.05) 0 1px 2px 0;
-    --focus-shadow: rgba(0,0,0,0.1) 0 4px 12px;
-    --font: 'Bricolage Grotesque', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    background: var(--cream); color: var(--charcoal);
-    font-family: var(--font); font-weight: 400;
-    font-size: 16px; line-height: 1.5;
-    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-  }
-  a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
-  a:hover { text-decoration-thickness: 1.5px; }
-  button { font-family: inherit; cursor: pointer; border: 0; background: transparent; color: inherit; }
-  img { max-width: 100%; display: block; }
-
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-
-  .nav {
-    position: sticky; top: 0; z-index: 40;
-    background: rgba(247,244,237,0.82);
-    backdrop-filter: saturate(140%) blur(12px);
-    -webkit-backdrop-filter: saturate(140%) blur(12px);
-  }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
-  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; font-size: 18px; letter-spacing: -0.3px; }
-  .brand-mark {
-    width: 26px; height: 26px; border-radius: 9999px;
-    background: radial-gradient(ellipse at 30% 30%, #ffb6c6 0%, #ff8da1 40%, #e5b8ff 70%, #a5c8ff 100%);
-    box-shadow: var(--inset-dark);
-  }
-  .nav-links { display: flex; gap: 24px; align-items: center; }
-  .nav-links a { text-decoration: none; color: var(--charcoal); font-size: 15px; opacity: 0.9; }
-  .nav-links a:hover { opacity: 1; }
-  .nav-right { display: flex; gap: 10px; align-items: center; }
-
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 18px; border-radius: 6px;
-    font-size: 15px; line-height: 1.35;
-    transition: opacity .15s ease, box-shadow .2s ease, transform .2s ease;
-    user-select: none;
-  }
-  .btn:active { opacity: 0.8; transform: translateY(0.5px); }
-  .btn:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
-  .btn-dark { background: var(--charcoal); color: var(--offwhite); box-shadow: var(--inset-dark); }
-  .btn-dark:hover { box-shadow: var(--inset-dark), 0 6px 20px rgba(0,0,0,0.12); }
-  .btn-ghost { background: transparent; color: var(--charcoal); border: 1px solid var(--charcoal-40); }
-  .btn-ghost:hover { background: var(--charcoal-04); }
-  .btn-cream { background: var(--cream-surface); color: var(--charcoal); }
+  /* Page-specific: hero wash, prompt card, stats, features, templates, count-up */
 
   .hero { position: relative; padding: 112px 0 96px; overflow: hidden; text-align: center; }
   .hero-wash {
@@ -84,7 +22,9 @@
       radial-gradient(70% 50% at 50% 85%, rgba(180,200,255,0.45), transparent 60%),
       radial-gradient(40% 30% at 80% 70%, rgba(230,190,255,0.5), transparent 60%);
     filter: blur(30px); pointer-events: none; z-index: 0;
+    transition: opacity .25s ease;
   }
+  body.dark .hero-wash { opacity: 0.35; }
   .hero-inner { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; }
 
   .eyebrow {
@@ -116,6 +56,10 @@
     background: linear-gradient(92deg, #d64b6a, #c07a30 40%, #5a78b8);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
+  body.dark h1 em {
+    background: linear-gradient(92deg, #ff99ae, #e3a059 40%, #8fa8de);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
   .hero p.lede {
     font-size: 18px; line-height: 1.45; color: var(--charcoal-82);
     max-width: 620px; margin: 0 auto 36px;
@@ -128,6 +72,7 @@
     border-radius: 16px; padding: 20px; text-align: left;
     box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
   }
+  body.dark .prompt-card { box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset; }
   .prompt-input {
     width: 100%; min-height: 96px; resize: vertical;
     background: transparent; border: 0; outline: 0;
@@ -206,158 +151,53 @@
   }
   .tpl-thumb img {
     width: 100%; height: 100%; object-fit: cover; display: block;
-    transition: transform .4s ease; filter: saturate(0.92);
+    transition: transform .4s ease, filter .4s ease;
+    filter: saturate(0.92);
   }
+  body.dark .tpl-thumb img { filter: saturate(0.85) brightness(0.82); }
   .tpl:hover .tpl-thumb img { transform: scale(1.03); }
   .tpl-thumb::after {
     content: ""; position: absolute; inset: 0;
     background: linear-gradient(180deg, rgba(247,244,237,0) 55%, rgba(247,244,237,0.45) 100%);
     pointer-events: none;
   }
+  body.dark .tpl-thumb::after {
+    background: linear-gradient(180deg, rgba(23,19,14,0) 55%, rgba(23,19,14,0.6) 100%);
+  }
   .tpl-meta { padding: 16px 18px; display: flex; justify-content: space-between; align-items: center; }
   .tpl-meta h4 { margin: 0; font-size: 16px; font-weight: 400; }
   .tpl-cat { font-size: 13px; color: var(--muted); }
 
-  footer {
-    margin: 80px 24px 24px;
-    border-radius: 16px;
-    padding: 80px 56px 40px;
-    background:
-      radial-gradient(60% 60% at 10% 100%, rgba(255,183,201,0.35), transparent 60%),
-      radial-gradient(50% 60% at 90% 100%, rgba(180,200,255,0.35), transparent 60%),
-      var(--cream-surface);
-    border: 1px solid var(--cream-light);
-  }
-  .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; }
-  footer h5 { font-size: 13px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); margin: 0 0 16px; font-weight: 500; }
-  footer ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-  footer li a { text-decoration: none; color: var(--charcoal); font-size: 14px; }
-  footer li a:hover { text-decoration: underline; }
-  .footer-foot {
-    border-top: 1px solid var(--cream-light); padding-top: 20px;
-    display: flex; justify-content: space-between; font-size: 13px; color: var(--muted);
-  }
-  .big-word {
-    font-size: clamp(80px, 18vw, 180px); font-weight: 600; letter-spacing: -6px;
-    line-height: 0.9; margin: 56px 0 0;
-    background: linear-gradient(180deg, var(--charcoal) 0%, rgba(28,28,28,0.15) 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-
-  /* Tightened CTA section (was default 128px, now roughly half) */
   #cta { padding: 64px 0; }
 
-  /* Pricing */
-  #pricing { padding: 112px 0 96px; }
-  #pricing .section-head {
-    text-align: center; margin: 0 auto 56px; max-width: 640px;
-  }
-  #pricing .section-head h2 { margin: 0 0 12px; }
-  #pricing .section-head p { margin: 0 auto; }
-  .plans {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    max-width: 1100px; margin: 0 auto;
-    align-items: stretch;
-  }
-  .plan {
-    background: var(--cream-surface);
-    border: 1px solid var(--cream-light);
-    border-radius: 12px;
-    padding: 32px 28px 30px;
-    display: flex; flex-direction: column; gap: 22px;
-    position: relative;
-    transition: border-color .2s ease, transform .2s ease;
-  }
-  .plan:hover { border-color: var(--charcoal-40); }
-  .plan--featured {
-    background: var(--charcoal);
-    color: var(--offwhite);
-    border-color: var(--charcoal);
-    transform: translateY(-8px);
-    box-shadow: var(--inset-dark), 0 14px 36px rgba(0,0,0,0.10);
-  }
-  .plan--featured:hover { border-color: var(--charcoal); }
-  .plan-badge {
-    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-    background: var(--cream-surface); color: var(--charcoal);
-    font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase;
-    padding: 6px 14px; border-radius: 9999px;
-    border: 1px solid var(--cream-light);
-    white-space: nowrap;
-  }
-  .plan-head h3 {
-    font-size: 22px; font-weight: 600; letter-spacing: -0.3px;
-    margin: 0 0 6px;
-  }
-  .plan-desc {
-    margin: 0; font-size: 14px; line-height: 1.5;
-    color: var(--muted);
-  }
-  .plan--featured .plan-desc { color: rgba(252,251,248,0.68); }
-  .plan-price { display: flex; align-items: baseline; gap: 6px; }
-  .plan-price .amt {
-    font-size: 44px; font-weight: 600; letter-spacing: -1.5px; line-height: 1;
-  }
-  .plan-price .per { font-size: 14px; color: var(--muted); }
-  .plan--featured .plan-price .per { color: rgba(252,251,248,0.68); }
-  .plan-trial {
-    font-size: 12px; color: var(--muted); margin-top: -14px;
-  }
-  .plan--featured .plan-trial { color: rgba(252,251,248,0.55); }
-  .plan-features {
-    list-style: none; padding: 0; margin: 0;
-    display: flex; flex-direction: column; gap: 10px;
-    flex: 1;
-  }
-  .plan-features li {
-    position: relative; padding-left: 24px;
-    font-size: 14px; line-height: 1.5;
-  }
-  .plan-features li::before {
-    content: ""; position: absolute; left: 0; top: 4px;
-    width: 14px; height: 8px;
-    border-left: 1.5px solid var(--charcoal);
-    border-bottom: 1.5px solid var(--charcoal);
-    transform: rotate(-45deg);
-  }
-  .plan--featured .plan-features li::before { border-color: var(--offwhite); }
-  .plan .btn { justify-content: center; width: 100%; }
-  .plan--featured .btn-dark {
-    background: var(--offwhite); color: var(--charcoal);
-    box-shadow: var(--inset-dark);
-  }
-  .plan--featured .btn-dark:hover { background: #ffffff; }
-
   @media (max-width: 900px) {
-    .nav-links { display: none; }
     .features, .templates { grid-template-columns: 1fr; }
     .stats { grid-template-columns: repeat(2, 1fr); gap: 28px; }
     section { padding: 72px 0; }
     .hero { padding: 72px 0 56px; }
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-    footer { padding: 48px 24px 24px; }
     #cta { padding: 48px 0; }
-    #pricing { padding: 64px 0 56px; }
-    .plans { grid-template-columns: 1fr; }
-    .plan--featured { transform: none; }
   }
 </style>
 </head>
 <body>
+<script>try { if (localStorage.getItem('heartwood-theme') === 'dark') document.body.classList.add('dark'); } catch (e) {}</script>
 
 <header class="nav">
   <div class="container nav-inner">
-    <a href="#" class="brand"><span class="brand-mark"></span><span>Heartwood</span></a>
+    <a href="index.html" class="brand"><span class="brand-mark"></span><span>Heartwood</span></a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="#build">Build</a>
-      <a href="#templates">Templates</a>
-      <a href="#docs">Docs</a>
-      <a href="#pricing">Pricing</a>
+      <a href="index.html#build" class="active">Build</a>
+      <a href="index.html#templates">Templates</a>
+      <a href="docs.html">Docs</a>
+      <a href="pricing.html">Pricing</a>
     </nav>
     <div class="nav-right">
-      <a href="#login" class="btn btn-cream" style="font-size:14px;padding:8px 14px;">Log in</a>
-      <a href="#start" class="btn btn-dark">Start building</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <a href="signin.html" class="login-link">Log in</a>
+      <a href="signin.html" class="btn btn-dark">Start building</a>
     </div>
   </div>
 </header>
@@ -374,23 +214,11 @@
         <textarea class="prompt-input" placeholder="Describe the app you want to build…  e.g. &quot;A cozy bookshelf where I can track what I'm reading and share reviews with friends.&quot;" rows="3"></textarea>
         <div class="prompt-row">
           <div class="pills">
-            <button class="pill" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-              Plan
-            </button>
-            <button class="pill" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="12" height="16" rx="6"/><path d="M12 10v4M8 22h8"/></svg>
-              Voice
-            </button>
-            <button class="pill" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10l4-4 4 4 3-3 7 7"/></svg>
-              Attach
-            </button>
+            <button class="pill" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>Plan</button>
+            <button class="pill" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4" width="12" height="16" rx="6"/><path d="M12 10v4M8 22h8"/></svg>Voice</button>
+            <button class="pill" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10l4-4 4 4 3-3 7 7"/></svg>Attach</button>
           </div>
-          <button class="btn btn-dark" type="button">
-            Build it
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </button>
+          <button class="btn btn-dark" type="button">Build it<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
         </div>
       </div>
 
@@ -421,36 +249,12 @@
         <p>Describe the outcome. Heartwood drafts the schema, scaffolds the UI, and writes the code — then walks through its decisions so you can steer.</p>
       </div>
       <div class="features">
-        <article class="card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L3 7l9 5 9-5-9-5zM3 12l9 5 9-5M3 17l9 5 9-5"/></svg></div>
-          <h3>Full-stack from a sentence</h3>
-          <p>From a single prompt you get a database, API, typed components, auth, and a deploy URL — not a scaffold, a working app.</p>
-        </article>
-        <article class="card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18M8 4v4M16 4v4"/></svg></div>
-          <h3>Edits in plain language</h3>
-          <p>Point at anything on the page and describe the change. "Make this calmer", "make the hero feel like a bookshop" — Heartwood speaks design, not classes.</p>
-        </article>
-        <article class="card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg></div>
-          <h3>Real code, yours forever</h3>
-          <p>Export a clean Next.js or Remix project with tests and CI on day one. No lock-in — Heartwood is a collaborator, not a cage.</p>
-        </article>
-        <article class="card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div>
-          <h3>Deploy anywhere</h3>
-          <p>One click to Vercel, Fly, or your own cluster. Environments, preview URLs, and rollbacks are handled for you.</p>
-        </article>
-        <article class="card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.5 5L20 8l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-1z"/></svg></div>
-          <h3>A taste for detail</h3>
-          <p>Typography, spacing, and motion are baked in. Heartwood won't ship a site that looks like a wireframe.</p>
-        </article>
-        <article class="card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 12V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8"/><path d="M16 22l4-4-4-4M22 18H12"/></svg></div>
-          <h3>Review, branch, revert</h3>
-          <p>Every change is a commit. Undo anything, branch to explore, and review diffs in-line — calm, composed, reversible.</p>
-        </article>
+        <article class="card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L3 7l9 5 9-5-9-5zM3 12l9 5 9-5M3 17l9 5 9-5"/></svg></div><h3>Full-stack from a sentence</h3><p>From a single prompt you get a database, API, typed components, auth, and a deploy URL — not a scaffold, a working app.</p></article>
+        <article class="card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18M8 4v4M16 4v4"/></svg></div><h3>Edits in plain language</h3><p>Point at anything on the page and describe the change. "Make this calmer", "make the hero feel like a bookshop" — Heartwood speaks design, not classes.</p></article>
+        <article class="card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg></div><h3>Real code, yours forever</h3><p>Export a clean Next.js or Remix project with tests and CI on day one. No lock-in — Heartwood is a collaborator, not a cage.</p></article>
+        <article class="card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div><h3>Deploy anywhere</h3><p>One click to Vercel, Fly, or your own cluster. Environments, preview URLs, and rollbacks are handled for you.</p></article>
+        <article class="card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.5 5L20 8l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-1z"/></svg></div><h3>A taste for detail</h3><p>Typography, spacing, and motion are baked in. Heartwood won't ship a site that looks like a wireframe.</p></article>
+        <article class="card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 12V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8"/><path d="M16 22l4-4-4-4M22 18H12"/></svg></div><h3>Review, branch, revert</h3><p>Every change is a commit. Undo anything, branch to explore, and review diffs in-line — calm, composed, reversible.</p></article>
       </div>
     </div>
   </section>
@@ -462,93 +266,16 @@
         <p>Hand-tuned templates — fully editable in the studio, ready to ship in an afternoon.</p>
       </div>
       <div class="templates">
-        <article class="tpl">
-          <div class="tpl-thumb"><img loading="lazy" alt="" src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1200&q=80" /></div>
-          <div class="tpl-meta"><h4>Pocket Journal</h4><span class="tpl-cat">Personal</span></div>
-        </article>
-        <article class="tpl">
-          <div class="tpl-thumb"><img loading="lazy" alt="" src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1200&q=80" /></div>
-          <div class="tpl-meta"><h4>Studio Portfolio</h4><span class="tpl-cat">Creator</span></div>
-        </article>
-        <article class="tpl">
-          <div class="tpl-thumb"><img loading="lazy" alt="" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80" /></div>
-          <div class="tpl-meta"><h4>Member Club</h4><span class="tpl-cat">Community</span></div>
-        </article>
-        <article class="tpl">
-          <div class="tpl-thumb"><img loading="lazy" alt="" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80" /></div>
-          <div class="tpl-meta"><h4>Bookshop</h4><span class="tpl-cat">E-commerce</span></div>
-        </article>
-        <article class="tpl">
-          <div class="tpl-thumb"><img loading="lazy" alt="" src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80" /></div>
-          <div class="tpl-meta"><h4>Team OS</h4><span class="tpl-cat">Internal</span></div>
-        </article>
-        <article class="tpl">
-          <div class="tpl-thumb"><img loading="lazy" alt="" src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80" /></div>
-          <div class="tpl-meta"><h4>Reading Room</h4><span class="tpl-cat">Editorial</span></div>
-        </article>
+        <article class="tpl"><div class="tpl-thumb"><img loading="lazy" alt="" src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1200&q=80" /></div><div class="tpl-meta"><h4>Pocket Journal</h4><span class="tpl-cat">Personal</span></div></article>
+        <article class="tpl"><div class="tpl-thumb"><img loading="lazy" alt="" src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1200&q=80" /></div><div class="tpl-meta"><h4>Studio Portfolio</h4><span class="tpl-cat">Creator</span></div></article>
+        <article class="tpl"><div class="tpl-thumb"><img loading="lazy" alt="" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80" /></div><div class="tpl-meta"><h4>Member Club</h4><span class="tpl-cat">Community</span></div></article>
+        <article class="tpl"><div class="tpl-thumb"><img loading="lazy" alt="" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80" /></div><div class="tpl-meta"><h4>Bookshop</h4><span class="tpl-cat">E-commerce</span></div></article>
+        <article class="tpl"><div class="tpl-thumb"><img loading="lazy" alt="" src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80" /></div><div class="tpl-meta"><h4>Team OS</h4><span class="tpl-cat">Internal</span></div></article>
+        <article class="tpl"><div class="tpl-thumb"><img loading="lazy" alt="" src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80" /></div><div class="tpl-meta"><h4>Reading Room</h4><span class="tpl-cat">Editorial</span></div></article>
       </div>
       <div style="margin-top:40px;display:flex;gap:12px;">
         <a href="#all" class="btn btn-ghost">Browse all templates</a>
         <a href="#blank" class="btn btn-cream">Start from blank</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="pricing" style="background: var(--charcoal-03); border-top: 1px solid var(--cream-light); border-bottom: 1px solid var(--cream-light);">
-    <div class="container">
-      <div class="section-head">
-        <h2>Priced for the long run.</h2>
-        <p>Start free. Upgrade when your app starts paying for itself.</p>
-      </div>
-      <div class="plans">
-        <article class="plan">
-          <div class="plan-head">
-            <h3>Free</h3>
-            <p class="plan-desc">For hobby projects and weekend tinkering.</p>
-          </div>
-          <div class="plan-price"><span class="amt">$0</span><span class="per">/month</span></div>
-          <ul class="plan-features">
-            <li>1 app</li>
-            <li>Heartwood subdomain</li>
-            <li>Community support</li>
-            <li>Export full source any time</li>
-          </ul>
-          <a href="#signup" class="btn btn-ghost">Start free</a>
-        </article>
-
-        <article class="plan plan--featured">
-          <div class="plan-badge">Most popular</div>
-          <div class="plan-head">
-            <h3>Pro</h3>
-            <p class="plan-desc">For builders shipping real products.</p>
-          </div>
-          <div class="plan-price"><span class="amt">$29</span><span class="per">/month</span></div>
-          <div class="plan-trial">7-day free trial · no credit card</div>
-          <ul class="plan-features">
-            <li>Unlimited apps</li>
-            <li>Custom domains</li>
-            <li>Priority support</li>
-            <li>Advanced integrations</li>
-            <li>Team collaboration</li>
-          </ul>
-          <a href="#start-trial" class="btn btn-dark">Start 7-day free trial</a>
-        </article>
-
-        <article class="plan">
-          <div class="plan-head">
-            <h3>Enterprise</h3>
-            <p class="plan-desc">For teams that need SLA, SSO, and a direct line.</p>
-          </div>
-          <div class="plan-price"><span class="amt">$299</span><span class="per">/month</span></div>
-          <ul class="plan-features">
-            <li>Everything in Pro</li>
-            <li>Dedicated support engineer</li>
-            <li>99.99% uptime SLA</li>
-            <li>SSO / SAML</li>
-            <li>Custom integrations</li>
-          </ul>
-          <a href="#contact" class="btn btn-ghost">Contact us</a>
-        </article>
       </div>
     </div>
   </section>
@@ -558,8 +285,8 @@
       <h2 style="font-size: clamp(36px, 5vw, 54px);">The most lovable way to ship software.</h2>
       <p style="font-size:18px;color:var(--muted);margin: 8px auto 28px;">Free for hobby projects. No credit card. Your first deploy in a single afternoon.</p>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-        <a href="#start" class="btn btn-dark">Start building</a>
-        <a href="#tour" class="btn btn-ghost">Watch a 90-second tour</a>
+        <a href="signin.html" class="btn btn-dark">Start building</a>
+        <a href="pricing.html" class="btn btn-ghost">See pricing</a>
       </div>
     </div>
   </section>
@@ -568,12 +295,12 @@
 <footer>
   <div class="footer-grid">
     <div>
-      <a href="#" class="brand"><span class="brand-mark"></span><span>Heartwood</span></a>
+      <a href="index.html" class="brand"><span class="brand-mark"></span><span>Heartwood</span></a>
       <p style="color:var(--muted);margin:14px 0 0;max-width:320px;font-size:14px;">Software that feels like it was made by someone who cares.</p>
     </div>
     <div>
       <h5>Product</h5>
-      <ul><li><a href="#">Studio</a></li><li><a href="#">Templates</a></li><li><a href="#">Integrations</a></li><li><a href="#">Changelog</a></li></ul>
+      <ul><li><a href="index.html#build">Studio</a></li><li><a href="index.html#templates">Templates</a></li><li><a href="#">Integrations</a></li><li><a href="#">Changelog</a></li></ul>
     </div>
     <div>
       <h5>Company</h5>
@@ -581,7 +308,7 @@
     </div>
     <div>
       <h5>Resources</h5>
-      <ul><li><a href="#">Documentation</a></li><li><a href="#">Community</a></li><li><a href="#">Guides</a></li><li><a href="#">Status</a></li></ul>
+      <ul><li><a href="docs.html">Documentation</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="signin.html">Sign in</a></li><li><a href="#">Status</a></li></ul>
     </div>
   </div>
   <div class="big-word" aria-hidden="true">Heartwood</div>
@@ -592,51 +319,40 @@
 </footer>
 
 <script>
-  // Count-up animation on scroll for stats
   (function () {
     const nums = document.querySelectorAll('.stat-n[data-count-to]');
     if (!nums.length) return;
-
     function format(el, value) {
       const decimals = parseInt(el.dataset.decimals || '0', 10);
       const suffix = el.dataset.suffix || '';
       return value.toFixed(decimals) + suffix;
     }
-
-    // Seed each number at 0 so count-up is visible even on first paint
     nums.forEach(n => { n.textContent = format(n, 0); });
-
     function animate(el) {
       const target = parseFloat(el.dataset.countTo);
-      const duration = 1400; // ms — ~5-7x the human read-speed of the number
+      const duration = 1400;
       const start = performance.now();
       function tick(now) {
         const p = Math.min(1, (now - start) / duration);
-        const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+        const eased = 1 - Math.pow(1 - p, 3);
         el.textContent = format(el, target * eased);
         if (p < 1) requestAnimationFrame(tick);
       }
       requestAnimationFrame(tick);
     }
-
     if (!('IntersectionObserver' in window)) {
-      // Fallback: no IO — just snap to final values
       nums.forEach(n => { n.textContent = format(n, parseFloat(n.dataset.countTo)); });
       return;
     }
-
     const io = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animate(entry.target);
-          io.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) { animate(entry.target); io.unobserve(entry.target); }
       });
     }, { threshold: 0.4 });
-
     nums.forEach(n => io.observe(n));
   })();
 </script>
+<script src="theme.js" defer></script>
 
 </body>
 </html>
